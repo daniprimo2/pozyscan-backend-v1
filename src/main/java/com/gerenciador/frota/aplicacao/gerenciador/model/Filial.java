@@ -1,6 +1,7 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.FilialResponse;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,12 @@ import java.util.List;
 public class Filial {
 
     @Id
-    @Column(name = "id_nome_filial", nullable = false)
+    @Column(name = "id_filial")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    @Column(name = "nome_filial")
     private String nome;
 
     @Column(name = "centro_de_custo")
@@ -35,4 +41,12 @@ public class Filial {
     private String patente;
 
 
+    public FilialResponse construirResponse() {
+        return FilialResponse.builder()
+                .id(id)
+                .nome(nome)
+                .centroDeCusto(centroDeCusto)
+                .patente(patente)
+                .build();
+    }
 }
