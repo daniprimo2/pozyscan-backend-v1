@@ -21,7 +21,6 @@ public class FilialController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<FilialResponse> adicionarNovaFilial(@RequestBody FilialRquest filialRquest) {
-        System.out.println(filialRquest);
         return ResponseEntity.ok(filialService.adicionarNovaFilial(filialRquest));
     }
 

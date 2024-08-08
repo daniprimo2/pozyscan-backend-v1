@@ -2,15 +2,14 @@ package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +22,7 @@ public class Aplicacao {
     @Column(name = "id_aplicacao")
     private Long id;
 
-    @Column(name = "tipo_nome", nullable = false)
+    @Column(name = "tipo_nome")
     private String tipo;
 
     @Column(name = "descricao")
