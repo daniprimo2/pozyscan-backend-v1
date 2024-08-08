@@ -28,5 +28,6 @@ public class Telefone {
 
     @JsonIgnore
     @ManyToOne
-    private Contato contato_id;
+    @JoinColumn(name = "contato_id")
+    private Contato contato;
 }

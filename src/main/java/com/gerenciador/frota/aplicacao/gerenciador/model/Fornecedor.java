@@ -28,10 +28,11 @@ public class Fornecedor {
     @Column(name = "cnpj_fornecedor")
     private String cnpj;
 
-    @OneToMany(mappedBy = "fornecedor_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "fornecedor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Contato> contatos = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name = "id_filial")
     private Filial filial;
 
 }

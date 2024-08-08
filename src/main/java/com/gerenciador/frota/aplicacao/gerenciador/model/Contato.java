@@ -29,12 +29,13 @@ public class Contato {
 
     @JsonIgnore
     @ManyToOne
-    private Fornecedor fornecedor_id;
+    @JoinColumn(name = "fornecedor_id") // Nome da coluna correspondente na tabela
+    private Fornecedor fornecedor;
 
-    @OneToMany(mappedBy = "contato_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contato", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EmailContato> emails = new ArrayList<>();
 
-    @OneToMany(mappedBy = "contato_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contato", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Telefone> telefones = new ArrayList<>();
 
 
