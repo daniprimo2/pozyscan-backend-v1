@@ -56,7 +56,7 @@ public class FilialService {
             return new ArrayList<>();
         }
 
-        return filiais;
+        return filiais.subList(startIndex, emdIndex);
     }
 
     private List<Filial> getFiliais(FiltroFilialRequest filtroFilialRequest) {

@@ -53,7 +53,7 @@ public class AplicacaoService {
             return new ArrayList<>();
         }
 
-        return aplicacoes;
+        return aplicacoes.subList(startIndex, emdIndex);
     }
 
     private List<Aplicacao> getAplicacoes(AplicacaoFiltroRequest aplicacaoFiltroRequest) {
