@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,9 +28,11 @@ public class Veiculo {
     @Column(name = "ano_veiculo")
     private String ano;
 
+    @JsonIgnore
     @ManyToOne
     private Categoria categoria_id;
 
+    @JsonIgnore
     @ManyToOne
     private Tipo tipo_id;
 
