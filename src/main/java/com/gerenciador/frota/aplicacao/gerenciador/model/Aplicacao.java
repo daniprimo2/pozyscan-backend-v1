@@ -1,6 +1,7 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectAplicacaoResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,4 +37,10 @@ public class Aplicacao {
     @ManyToOne
     private Filial filial;
 
+    public SelectAplicacaoResponse tratarSelectsAplicacoes() {
+        return SelectAplicacaoResponse.builder()
+                .idAplicacao(this.id)
+                .nomeAplicacao(this.descricao)
+                .build();
+    }
 }

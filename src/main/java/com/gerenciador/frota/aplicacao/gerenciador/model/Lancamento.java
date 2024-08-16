@@ -1,6 +1,7 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.StatusLancamento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,13 +39,11 @@ public class Lancamento {
     @OneToOne
     private NotaFiscal numero_nf;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status_lancamento")
-    private String status;
+    private StatusLancamento status;
 
     @Column(name = "centro_de_custo")
     private String centroCusto;
-
-    @ManyToOne
-    private Filial filial;
 
 }

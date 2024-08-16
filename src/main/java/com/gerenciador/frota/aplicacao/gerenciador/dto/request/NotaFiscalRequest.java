@@ -19,9 +19,9 @@ public class NotaFiscalRequest {
     private String numeroNotaFiscal;
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaDePagamento;
-    private Double valorTotalDaNota;
+    private String valorTotalDaNota;
     private String dataPagamento;
-    private Integer quantidadeDeParcelas;
+    private String quantidadeDeParcelas;
     private String comprovanteNF;
 
     public NotaFiscal construirNotaFiscal() {
@@ -30,7 +30,7 @@ public class NotaFiscalRequest {
                 .dataEmissao(DataUtils.converterLocalDateParaNossoPadraoData(LocalDate.now()))
                 .formaPagamento(formaDePagamento)
                 .arquivoNf(comprovanteNF)
-                .valorTotal(valorTotalDaNota)
+                .valorTotal(Double.valueOf(valorTotalDaNota))
                 .build();
     }
 }

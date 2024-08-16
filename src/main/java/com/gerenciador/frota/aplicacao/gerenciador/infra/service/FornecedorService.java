@@ -3,6 +3,7 @@ package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorFiltroRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorRequest;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectFornecedoresResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.ContatoRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.EmailRepotitory;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.FornecedorRepository;
@@ -110,5 +111,15 @@ public class FornecedorService {
         fornecedorRepository.deletarFornecedor(id);
         log.info("[END] - Fornecedor excluido");
         return RetornoServicoBase.positivo("Fornecedor " + fornecedor.getNome() + " foi deletado.");
+    }
+
+    public Fornecedor buscarFornecedorPorId(Long fornecedorId) {
+        return fornecedorRepository.findById(fornecedorId)
+                .orElseThrow(() -> new RuntimeException("Fornecedor não encontrado"));
+    }
+
+
+    public List<Fornecedor> buscarTodosFornecedores() {
+        return fornecedorRepository.findAll();
     }
 }

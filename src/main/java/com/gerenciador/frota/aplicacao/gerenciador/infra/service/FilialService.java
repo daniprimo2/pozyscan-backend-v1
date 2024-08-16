@@ -4,6 +4,7 @@ import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FilialRquest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FiltroFilialRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.FilialResponse;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectFilialResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.FilialRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.model.Filial;
 import lombok.extern.slf4j.Slf4j;
@@ -83,5 +84,14 @@ public class FilialService {
         filialRepository.delete(filial);
         log.info("[END] - Filial foi deletada.");
         return RetornoServicoBase.positivo(filial.getNome() + " excluido com sucesso.");
+    }
+
+    public Filial buscarFilialPorId(Long filialId) {
+        return filialRepository.findById(filialId)
+                .orElseThrow(() -> new RuntimeException("Filial não foi encntrada."));
+    }
+
+    public List<Filial> buscarTodasFiliais() {
+        return filialRepository.findAll();
     }
 }

@@ -2,16 +2,15 @@ package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.FilialResponse;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectFilialResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,6 +46,13 @@ public class Filial {
                 .nome(nome)
                 .centroDeCusto(centroDeCusto)
                 .patente(patente)
+                .build();
+    }
+
+    public SelectFilialResponse tratarSelectsFiliais() {
+        return SelectFilialResponse.builder()
+                .idFilial(this.id)
+                .nomeFilial(this.nome)
                 .build();
     }
 }

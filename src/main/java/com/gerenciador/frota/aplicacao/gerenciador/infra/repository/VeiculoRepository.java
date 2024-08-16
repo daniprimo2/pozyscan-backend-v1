@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VeiculoRepository extends JpaRepository<Veiculo, String> {
@@ -37,4 +38,6 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, String> {
                                                           @Param("modelo") String modelo,
                                                           @Param("tipo") Long tipo,
                                                           @Param("categoria") Long categoria);
+
+    Optional<Veiculo> findByPlaca(String placaVeiculo);
 }

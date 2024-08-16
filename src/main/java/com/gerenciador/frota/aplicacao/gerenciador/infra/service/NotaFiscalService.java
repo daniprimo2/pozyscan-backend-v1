@@ -4,6 +4,7 @@ import com.gerenciador.frota.aplicacao.Util.Data.DataUtils;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.FormaPagamento;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.StatusPagamento;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.NotaFiscalRequest;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.NotaFiscalRespponse;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.NotaFiscalRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.ParcelaRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.model.NotaFiscal;
@@ -11,6 +12,7 @@ import com.gerenciador.frota.aplicacao.gerenciador.model.Parcela;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -65,11 +67,11 @@ public class NotaFiscalService {
 
 
         if (notaFiscalRequest.getFormaDePagamento().equals(FormaPagamento.A_VISTA_A_PRAZO)){
-            notaFiscalRequest.setQuantidadeDeParcelas(1);
+            notaFiscalRequest.setQuantidadeDeParcelas("1");
         }
 
         List<Parcela> listasParcelas = new ArrayList<>();
-        double valorDaParcela = notaFiscalRequest.getValorTotalDaNota() / notaFiscalRequest.getQuantidadeDeParcelas();
+        double valorDaParcela = Double.parseDouble(notaFiscalRequest.getValorTotalDaNota()) / Integer.parseInt(notaFiscalRequest.getQuantidadeDeParcelas());
 //        double valorDaParcela = Math.round((notaFiscalRequest.getValorTotalDaNota() / notaFiscalRequest.getQuantidadeDeParcelas()) * 100.0) / 100.0;
 
         String[] dataParcelasPartilhado = notaFiscalRequest.getDataPagamento().split("/");
@@ -77,7 +79,7 @@ public class NotaFiscalService {
         String mesDasDatas = dataParcelasPartilhado[1];
         String diaDasDatas = dataParcelasPartilhado[0];
 
-        for (int i = 1; i <= notaFiscalRequest.getQuantidadeDeParcelas(); i++) {
+        for (int i = 1; i <= Integer.parseInt(notaFiscalRequest.getQuantidadeDeParcelas()); i++) {
             Parcela parcela = Parcela.builder()
                     .notaFiscal(notaFiscal)
                     .dataVencimento(diaDasDatas+ "/" + mesDasDatas + "/" + anoDasDatas)
@@ -101,4 +103,42 @@ public class NotaFiscalService {
         }
         return listasParcelas;
     }
+
+    public NotaFiscal buscarNFPorId(String notaFiscalId) {
+        return notaFiscalRepository.findById(notaFiscalId)
+                .orElseThrow(() -> new RuntimeException("NF não encontrada"));
+    }
+
+    @Transactional
+    public List<NotaFiscalRespponse> buscarInformacoesFiscaisPorNumero(String numero) {
+        List<NotaFiscalRespponse> infoNotas = notaFiscalRepository.findByFormaPagamentoAndNumero(FormaPagamento.A_VISTA, numero)
+                .stream().map(data -> {
+                    return NotaFiscalRespponse.builder()
+                            .numeroNf(String.valueOf(Long.valueOf(data.getNumero())))
+                            .dataEmissao(data.getDataEmissao())
+                            .dataDePagamento(data.getDataEmissao())
+                            .descricaoParcela("1/1")
+                            .statusPagamento(data.getStatus().getDescricao())
+                            .valorDoPagamento("R$ "+ data.getValorTotal())
+                            .build();
+                }).toList();
+
+        if (infoNotas.isEmpty()) {
+            List<NotaFiscalRespponse> infoNotasParcela = notaFiscalRepository.findByParcelasNotaFiscal(numero).stream().map(data -> {
+                return NotaFiscalRespponse.builder()
+                        .numeroNf(data.getNumeroNf())
+                        .dataEmissao(data.getDataEmissao())
+                        .descricaoParcela(data.getDescricaoParcela())
+                        .dataDePagamento(data.getDataDePagamento())
+                        .statusPagamento(data.getStatusPagamento())
+                        .valorDoPagamento("R$ "+ data.getValorDoPagamento())
+                        .build();
+            }).toList();
+
+            return infoNotasParcela;
+        }
+
+        return infoNotas;
+    }
+
 }

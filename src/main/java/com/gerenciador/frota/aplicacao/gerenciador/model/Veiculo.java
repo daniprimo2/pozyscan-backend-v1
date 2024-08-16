@@ -1,17 +1,17 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectPlacaResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -44,5 +44,12 @@ public class Veiculo {
 
     @ManyToOne
     private Filial filial;
+
+
+    public SelectPlacaResponse tratandoSelectsPlaca(){
+        return SelectPlacaResponse.builder()
+                .placa(this.placa)
+                .build();
+    }
 
 }

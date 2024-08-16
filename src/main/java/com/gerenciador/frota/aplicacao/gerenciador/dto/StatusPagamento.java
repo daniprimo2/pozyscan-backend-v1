@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum StatusPagamento {
 
-    PAGO("PAGO-AGUARDANDO-FATURAMENTO"),
+    PAGO("PAGO"),
     AVISTA_A_PRAZO("AVISTA-COM-PRAZO"),
     EM_ABERTO("PARCELAS-EM-ABERTO");
 

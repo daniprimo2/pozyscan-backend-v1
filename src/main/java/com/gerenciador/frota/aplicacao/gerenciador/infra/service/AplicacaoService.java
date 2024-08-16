@@ -3,6 +3,7 @@ package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.AplicacaoFiltroRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.AplicacaoRequest;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectAplicacaoResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.AplicacaoRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.model.Aplicacao;
 import lombok.extern.slf4j.Slf4j;
@@ -79,5 +80,14 @@ public class AplicacaoService {
                 .orElseThrow(() -> new RuntimeException("Filial não encontrado."));
         aplicacaoRepository.delete(aplicacao);
         return RetornoServicoBase.positivo("Aplicacao "+ aplicacao.getTipo() + " foi deletada.");
+    }
+
+    public Aplicacao buscarAplicacaoPorId(Long aplicacaoId) {
+        return aplicacaoRepository.findById(aplicacaoId)
+                .orElseThrow(() -> new RuntimeException("Aplicação não encontrada"));
+    }
+
+    public List<Aplicacao> buscarTodasAplicacoes() {
+        return aplicacaoRepository.findAll();
     }
 }

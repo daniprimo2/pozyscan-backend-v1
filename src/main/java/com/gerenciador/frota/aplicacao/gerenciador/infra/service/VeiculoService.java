@@ -101,4 +101,13 @@ public class VeiculoService {
         return RetornoServicoBase.positivo("Veiculo de placa: " + veiculo.getPlaca() + " deletado com suceso.");
 
     }
+
+    public Veiculo buscarVeiculoPorPlaca(String placaVeiculo) {
+        return veiculoRepository.findByPlaca(placaVeiculo)
+                .orElseThrow(() -> new RuntimeException("Veiculo não encontrado"));
+    }
+
+    public List<Veiculo> buscarTodosVeiculos() {
+        return veiculoRepository.findAll();
+    }
 }

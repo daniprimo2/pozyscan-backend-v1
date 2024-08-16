@@ -1,15 +1,14 @@
 package com.gerenciador.frota.aplicacao.gerenciador.model;
 
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectFornecedoresResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,4 +34,10 @@ public class Fornecedor {
     @JoinColumn(name = "id_filial")
     private Filial filial;
 
+    public SelectFornecedoresResponse tratarSelectsFornecedores() {
+        return SelectFornecedoresResponse.builder()
+                .idFornecedor(this.id)
+                .nomeFornecedor(this.nome)
+                .build();
+    }
 }
