@@ -40,7 +40,7 @@ public class Aplicacao {
     public SelectAplicacaoResponse tratarSelectsAplicacoes() {
         return SelectAplicacaoResponse.builder()
                 .idAplicacao(this.id)
-                .nomeAplicacao(this.descricao)
+                .nomeAplicacao(this.tipo)
                 .build();
     }
 }
