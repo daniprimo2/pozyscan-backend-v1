@@ -23,6 +23,9 @@ public class VeiculoController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<?> adicionarVeiculo(@RequestBody VeiculoRequest veiculoRequest) {
+        if (veiculoRequest.getPlaca().isEmpty())
+            throw new RuntimeException("Placa é campo obrigatorio");
+
         return ResponseEntity.ok(veiculoService.adicionarVeiculo(veiculoRequest));
     }
 

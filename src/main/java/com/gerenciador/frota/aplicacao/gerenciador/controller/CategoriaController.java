@@ -4,6 +4,7 @@ import com.gerenciador.frota.aplicacao.gerenciador.dto.request.CategoriaRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.service.CategoriaService;
 import com.gerenciador.frota.aplicacao.gerenciador.model.Categoria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,10 @@ public class CategoriaController {
     }
 
     @GetMapping("/buscarTodos")
-    public ResponseEntity<List<Categoria>> buscarTodasCategorias() {
-        return ResponseEntity.ok(categoriaService.buscarTodasCategorias());
+    public ResponseEntity buscarTodasCategorias() {
+
+            List<Categoria> categorias = categoriaService.buscarTodasCategorias();
+            return ResponseEntity.ok(categorias);
     }
 
 }

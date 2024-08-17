@@ -16,6 +16,8 @@ public class ContatoController {
     private ContatoService contatoService;
 
     public ResponseEntity<?> adicionarUmContato(@RequestBody ContatoRquest contatoRquest) {
+        if (contatoRquest.getNomeContato().isEmpty())
+            throw new RuntimeException("Nome do contado deve ser preenchido");
         return ResponseEntity.ok(contatoService.adicionarNovoContato(contatoRquest));
     }
 

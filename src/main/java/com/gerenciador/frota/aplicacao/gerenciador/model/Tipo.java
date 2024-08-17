@@ -26,9 +26,6 @@ public class Tipo {
     @Column(name = "descricao_tipo")
     private String descricao;
 
-    @OneToMany(mappedBy = "tipo_id")
-    private List<Veiculo> veiculos = new ArrayList<>();
-
     @ManyToOne
     private Filial filial;
 

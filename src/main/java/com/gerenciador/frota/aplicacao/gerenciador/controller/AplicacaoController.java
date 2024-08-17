@@ -20,6 +20,8 @@ public class AplicacaoController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<?> adicionarNovaAplicacao(@RequestBody AplicacaoRequest aplicacaoRequest) {
+        if (aplicacaoRequest.getTipo().isEmpty())
+            throw new RuntimeException("Campo tipo da applicacao deve ser preenchido.");
         return ResponseEntity.ok(aplicacaoService.salvarNovaAplicacao(aplicacaoRequest));
     }
 

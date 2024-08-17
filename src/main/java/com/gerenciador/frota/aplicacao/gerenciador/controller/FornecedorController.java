@@ -21,6 +21,9 @@ public class FornecedorController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<?> adicionarFornecedor(@RequestBody FornecedorRequest fornecedorRequest) {
+        if (fornecedorRequest.getNome().isEmpty())
+            throw new RuntimeException("Nome do Forncedor deve ser preenchido");
+
         return ResponseEntity.ok(fornecedorService.adicionarFornecedor(fornecedorRequest));
     }
 

@@ -10,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,9 +27,6 @@ public class Categoria {
 
     @Column(name = "descricao_categoria")
     private String descricao;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "categoria_id")
-    private List<Veiculo> veiculos = new ArrayList<>();
 
     @ManyToOne
     private Filial filial;

@@ -17,6 +17,8 @@ public class TipoController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<?> adicionarTipo(@RequestBody TipoRequest tipoRequest) {
+        if (tipoRequest.getNome().isEmpty())
+            throw new RuntimeException("Nome do tipo deve ser preenchido");
         return ResponseEntity.ok(tipoService.adicionarTipo(tipoRequest));
     }
 

@@ -19,6 +19,8 @@ public class CategoriaService {
     }
 
     public List<Categoria> buscarTodasCategorias() {
-        return categoriaRepository.findAll();
+        List<Categoria> all = categoriaRepository.findAll();
+        System.out.println(all);
+        return all;
     }
 }

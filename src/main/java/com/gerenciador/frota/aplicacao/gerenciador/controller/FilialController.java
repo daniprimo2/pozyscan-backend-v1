@@ -21,6 +21,8 @@ public class FilialController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<FilialResponse> adicionarNovaFilial(@RequestBody FilialRquest filialRquest) {
+        if (filialRquest.getNome().isEmpty())
+            throw new RuntimeException("Nome da Filial deve ser preenchido");
         return ResponseEntity.ok(filialService.adicionarNovaFilial(filialRquest));
     }
 

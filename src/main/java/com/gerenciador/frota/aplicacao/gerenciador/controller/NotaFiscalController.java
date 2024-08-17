@@ -15,6 +15,8 @@ public class NotaFiscalController {
 
     @PostMapping("/gerarNota")
     public ResponseEntity<?> gerarInsercaoNotaFiscal(@RequestBody NotaFiscalRequest notaFiscalRequest) {
+        if (notaFiscalRequest.getNumeroNotaFiscal().isEmpty())
+            throw new RuntimeException("Numero da nota deve ser informado");
         return ResponseEntity.ok(notaFiscalService.gerarIsercoesDasNotasFiscais(notaFiscalRequest));
     }
     @GetMapping("/buscarNota/{numero}")
