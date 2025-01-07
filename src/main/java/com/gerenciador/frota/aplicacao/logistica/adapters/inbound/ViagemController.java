@@ -1,4 +1,4 @@
-package com.gerenciador.frota.aplicacao.logistica.adapters.inbound.controller;
+package com.gerenciador.frota.aplicacao.logistica.adapters.inbound;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.logistica.aplicacao.casosDeUso.GerenciarViagemCasoDeUso;

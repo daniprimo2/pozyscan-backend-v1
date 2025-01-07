@@ -1,12 +1,17 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.repository;
 
+import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.request.ConcluirPagamentoDTO;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.LancamentoRelatorioResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.ParcelaRelatorioResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.model.Lancamento;
+import com.gerenciador.frota.aplicacao.gerenciador.model.Parcela;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -74,6 +79,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
     @Query(value = "SELECT lc.id_lancamento,\n" +
             "       lc.centro_de_custo,\n" +
             "\t   pc.nota_fiscal_numero_nf,\n" +
+            "\t   pc.id,\n" +
             "\t   pc.data_vencimento,\n" +
             "\t   pc.descricao_parcela,\n" +
             "\t   pc.status_pagamento,\n" +
@@ -97,7 +103,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
                                                            @Param("numeroNotaFiscal") String numeroNotaFiscal,
                                                            @Param("dataVencimento") String dataVencimento,
                                                            @Param("statusPagamentos") String statusPagamentos);
-
-    @Query(value = "DELETE FROM sc_gerenciador.tb_parcelas where nota_fiscal_numero_nf = :notaFiscal", nativeQuery = true)
-    void deletarTodosAsParcelasExistentes(@Param("notaFiscal") Long notaFiscal);
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE sc_gerenciador.tb_lancamento SET status_lancamento = 'PAGAMENTO_CONCLUIDO' WHERE numero_nf_numero_nf = :numeroNotaFiscal", nativeQuery = true)
+    void atualizarStatusLancamento(@Param("numeroNotaFiscal") String numeroNotaFiscal);
 }

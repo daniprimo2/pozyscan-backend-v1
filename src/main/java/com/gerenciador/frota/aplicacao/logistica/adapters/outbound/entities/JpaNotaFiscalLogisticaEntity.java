@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity(name = "NotaFiscalLogistica")
 @Table(name = "TB_NOTA_FISCAL_logistica", schema = "sc_logistica")
-public class NotaFiscalLogistica {
+public class JpaNotaFiscalLogisticaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class NotaFiscalLogistica {
 
     @ManyToOne
     @JoinColumn(name = "COD_REMESSA")
-    private Remessa remessa;
+    private JpaRemessaEntity jpaRemessaEntity;
 
     @ManyToOne
     @JoinColumn(name = "COD_ENDERECO")

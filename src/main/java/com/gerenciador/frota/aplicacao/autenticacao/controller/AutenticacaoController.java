@@ -5,6 +5,7 @@ import com.gerenciador.frota.aplicacao.autenticacao.dto.request.RequestRefreshTo
 import com.gerenciador.frota.aplicacao.autenticacao.dto.response.LoginResponseDTO;
 import com.gerenciador.frota.aplicacao.autenticacao.infra.service.TokenService;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Gestão de Acesso", description = "Controladores de de cadastro de usuarios e autenticação")
 @RestController
 @RequestMapping("/autenticacao")
 public class AutenticacaoController {

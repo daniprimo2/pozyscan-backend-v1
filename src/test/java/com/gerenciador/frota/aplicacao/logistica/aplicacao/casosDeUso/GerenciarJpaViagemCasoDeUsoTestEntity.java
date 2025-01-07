@@ -1,11 +1,13 @@
 package com.gerenciador.frota.aplicacao.logistica.aplicacao.casosDeUso;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaViagemEntity;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementacao.ViagemRepositoryImplementacao;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Viagem;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.adapters.ViagemRepositoryAdapters;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums.TipoViagem;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request.FiltroViagemRequest;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request.ViagemRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.TipoViagem;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.FiltroViagemRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.ViagemRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,10 +23,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GerenciarViagemCasoDeUsoTest {
+class GerenciarJpaViagemCasoDeUsoTestEntity {
 
     @Mock
-    private ViagemRepositoryAdapters viagemRepositoryAdapters;
+    private ViagemRepositoryImplementacao viagemRepositoryImplementacao;
 
     @InjectMocks
     private GerenciarViagemCasoDeUso gerenciarViagemCasoDeUso;
@@ -34,7 +36,7 @@ class GerenciarViagemCasoDeUsoTest {
         // Configuração
         ViagemRequest viagemRequest = ViagemRequest.builder().tipoViagem(TipoViagem.FROTA_AGREGADA).dataViagem(LocalDate.of(2024,10,12)).build();
 
-        Viagem viagem = Viagem.builder()
+        JpaViagemEntity jpaViagemEntity = JpaViagemEntity.builder()
                 .id(1L)
                 .dataCriacao("2024-12-10")
                 .dataProgramadaViagem("2024-12-12")
@@ -46,22 +48,22 @@ class GerenciarViagemCasoDeUsoTest {
                 .build();
 
         // Mocking do repositório
-        when(viagemRepositoryAdapters.salvar(any(ViagemRequest.class))).thenReturn(viagem);
+        when(viagemRepositoryImplementacao.salvar(any(ViagemRequest.class))).thenReturn(Mappers.fromJpaViagemEntityToViagem(jpaViagemEntity));
 
         // Ação
-        Viagem viagemCadastrada = gerenciarViagemCasoDeUso.cadastrarNovaViagem(viagemRequest);
+        Viagem jpaViagemEntityCadastrada = gerenciarViagemCasoDeUso.cadastrarNovaViagem(viagemRequest);
 
         // Verificação
-        assertNotNull(viagemCadastrada);
-        assertEquals(TipoViagem.FROTA_AGREGADA, viagemCadastrada.getTipoViagem());
-        assertEquals(1500.0, viagemCadastrada.getTotalKilometragem());
-        verify(viagemRepositoryAdapters, times(1)).salvar(any(ViagemRequest.class));
+        assertNotNull(jpaViagemEntityCadastrada);
+        assertEquals(TipoViagem.FROTA_AGREGADA, jpaViagemEntityCadastrada.getTipoViagem());
+        assertEquals(1500.0, jpaViagemEntityCadastrada.getTotalKilometragem());
+        verify(viagemRepositoryImplementacao, times(1)).salvar(any(ViagemRequest.class));
     }
 
     @Test
     void deveListarTodasAsViagensComSucesso() {
         // Configuração
-        List<Viagem> listaViagens = List.of(Viagem.builder()
+        List<JpaViagemEntity> listaViagens = List.of(JpaViagemEntity.builder()
                 .id(1L)
                 .dataCriacao("2024-12-10")
                 .dataProgramadaViagem("2024-12-12")
@@ -73,7 +75,7 @@ class GerenciarViagemCasoDeUsoTest {
                 .build());
 
         // Mocking do repositório
-        when(viagemRepositoryAdapters.listar()).thenReturn(listaViagens);
+        when(viagemRepositoryImplementacao.listar()).thenReturn(Mappers.fromListaJpaViagensToListaViagem(listaViagens));
 
         // Ação
         List<Viagem> viagens = gerenciarViagemCasoDeUso.listarTodasAsViagems();
@@ -81,7 +83,7 @@ class GerenciarViagemCasoDeUsoTest {
         // Verificação
         assertNotNull(viagens);
         assertEquals(1, viagens.size());
-        verify(viagemRepositoryAdapters, times(1)).listar();
+        verify(viagemRepositoryImplementacao, times(1)).listar();
     }
 
     @Test
@@ -91,7 +93,7 @@ class GerenciarViagemCasoDeUsoTest {
         FiltroViagemRequest filtroViagemRequest = new FiltroViagemRequest();
         Integer page = 0;
         Integer size = 10;
-        List<Viagem> listaViagens = List.of(Viagem.builder()
+        List<JpaViagemEntity> listaViagens = List.of(JpaViagemEntity.builder()
                 .id(1L)
                 .dataCriacao("2024-12-10")
                 .dataProgramadaViagem("2024-12-12")
@@ -101,10 +103,10 @@ class GerenciarViagemCasoDeUsoTest {
                 .totalRemessa(10.0)
                 .tipoViagem(TipoViagem.FROTA_AGREGADA)
                 .build());
-        PageImpl<Viagem> pageViagens = new PageImpl<>(listaViagens);
+        PageImpl<JpaViagemEntity> pageViagens = new PageImpl<>(listaViagens);
 
         // Mocking do repositório e utilitário de paginação
-        when(viagemRepositoryAdapters.listar(filtroViagemRequest)).thenReturn(listaViagens);
+        when(viagemRepositoryImplementacao.listar(filtroViagemRequest)).thenReturn(Mappers.fromListaJpaViagensToListaViagem(listaViagens));
 
         // Ação
         PageImpl<?> viagensPaginadas = gerenciarViagemCasoDeUso.listarComFiltroViagem(filtroViagemRequest, page, size);
@@ -112,14 +114,14 @@ class GerenciarViagemCasoDeUsoTest {
         // Verificação
         assertNotNull(viagensPaginadas);
         assertEquals(1, viagensPaginadas.getContent().size());
-        verify(viagemRepositoryAdapters, times(1)).listar(filtroViagemRequest);
+        verify(viagemRepositoryImplementacao, times(1)).listar(filtroViagemRequest);
     }
 
     @Test
     void deveBuscarViagemPorCodigoComSucesso() {
         // Configuração
         Long codigoViagem = 1L;
-        Viagem viagem = Viagem.builder()
+        JpaViagemEntity jpaViagemEntity = JpaViagemEntity.builder()
                 .id(1L)
                 .dataCriacao("2024-12-10")
                 .dataProgramadaViagem("2024-12-12")
@@ -131,16 +133,16 @@ class GerenciarViagemCasoDeUsoTest {
                 .build();
 
         // Mocking do repositório
-        when(viagemRepositoryAdapters.buscarViagemPorId(codigoViagem)).thenReturn(viagem);
+        when(viagemRepositoryImplementacao.buscarViagemPorId(codigoViagem)).thenReturn(Mappers.fromJpaViagemEntityToViagem(jpaViagemEntity));
 
         // Ação
-        Viagem viagemBuscada = gerenciarViagemCasoDeUso.buscarViagemPorCodigo(codigoViagem);
+        Viagem jpaViagemEntityBuscada = gerenciarViagemCasoDeUso.buscarViagemPorCodigo(codigoViagem);
 
         // Verificação
-        assertNotNull(viagemBuscada);
-        assertEquals(TipoViagem.FROTA_AGREGADA, viagem.getTipoViagem());
-        assertEquals(1500.0, viagem.getTotalKilometragem());
-        verify(viagemRepositoryAdapters, times(1)).buscarViagemPorId(codigoViagem);
+        assertNotNull(jpaViagemEntityBuscada);
+        assertEquals(TipoViagem.FROTA_AGREGADA, jpaViagemEntity.getTipoViagem());
+        assertEquals(1500.0, jpaViagemEntity.getTotalKilometragem());
+        verify(viagemRepositoryImplementacao, times(1)).buscarViagemPorId(codigoViagem);
     }
 
     @Test
@@ -150,7 +152,7 @@ class GerenciarViagemCasoDeUsoTest {
         RetornoServicoBase retornoServicoBase = RetornoServicoBase.positivo("Viagem deletada com sucesso.");
 
         // Mocking do repositório
-        when(viagemRepositoryAdapters.deletarViagemPorId(codigoViagem)).thenReturn(retornoServicoBase);
+        when(viagemRepositoryImplementacao.deletarViagemPorId(codigoViagem)).thenReturn(retornoServicoBase);
 
         // Ação
         RetornoServicoBase resultado = gerenciarViagemCasoDeUso.deletarViagemPorCodigo(codigoViagem);
@@ -158,6 +160,6 @@ class GerenciarViagemCasoDeUsoTest {
         // Verificação
         assertNotNull(resultado);
         assertTrue(resultado.getDescricao().contains("Viagem deletada com sucesso"));
-        verify(viagemRepositoryAdapters, times(1)).deletarViagemPorId(codigoViagem);
+        verify(viagemRepositoryImplementacao, times(1)).deletarViagemPorId(codigoViagem);
     }
 }

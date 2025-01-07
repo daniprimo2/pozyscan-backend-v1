@@ -5,12 +5,14 @@ import com.gerenciador.frota.aplicacao.autenticacao.dto.request.FiltroUsuariosRq
 import com.gerenciador.frota.aplicacao.autenticacao.dto.request.UsuarioRequest;
 import com.gerenciador.frota.aplicacao.autenticacao.infra.service.UsuarioService;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Gestão de Acesso", description = "Controladores de de cadastro de usuarios e autenticação")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {

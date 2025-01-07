@@ -1,57 +1,164 @@
-package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities;
+package com.gerenciador.frota.aplicacao.logistica.dominio.model;
 
 import com.gerenciador.frota.aplicacao.gerenciador.model.Veiculo;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.TipoViagem;
-import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "TB_VIAGEM", schema = "sc_logistica")
+
 public class Viagem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_viagem")
     private Long id;
 
-    @Column(name = "data_criacao")
     private String dataCriacao;
 
-    @Column(name = "data_programada_viagem")
     private String dataProgramadaViagem;
 
-    @Column(name = "data_realziado_viagem")
     private String dataRealizadoViagem;
 
-    @Column(name = "volume_total")
     private Double volumeTotal;
 
-    @Column(name = "peso_total")
     private Double pesoTotal;
 
-    @Column(name = "total_kilometragem")
     private Double totalKilometragem;
 
-    @Column(name = "total_remessa")
     private Double totalRemessa;
 
-    @ManyToOne
-    @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_viagem")
     private TipoViagem tipoViagem;
 
-    @OneToMany(mappedBy = "viagem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Remessa> remessas = new ArrayList<>();
 
+
+    public Viagem() {
+    }
+
+    public Viagem(Long id, String dataCriacao, String dataProgramadaViagem, String dataRealizadoViagem, Double volumeTotal, Double pesoTotal, Double totalKilometragem, Double totalRemessa, Veiculo veiculo, TipoViagem tipoViagem, List<Remessa> remessas) {
+        this.id = id;
+        this.dataCriacao = dataCriacao;
+        this.dataProgramadaViagem = dataProgramadaViagem;
+        this.dataRealizadoViagem = dataRealizadoViagem;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.totalKilometragem = totalKilometragem;
+        this.totalRemessa = totalRemessa;
+        this.veiculo = veiculo;
+        this.tipoViagem = tipoViagem;
+        this.remessas = remessas;
+    }
+
+    public Viagem(String dataCriacao, String dataProgramadaViagem, String dataRealizadoViagem, Double volumeTotal, Double pesoTotal, Double totalKilometragem, Double totalRemessa, Veiculo veiculo, TipoViagem tipoViagem, List<Remessa> remessas) {
+        this.dataCriacao = dataCriacao;
+        this.dataProgramadaViagem = dataProgramadaViagem;
+        this.dataRealizadoViagem = dataRealizadoViagem;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.totalKilometragem = totalKilometragem;
+        this.totalRemessa = totalRemessa;
+        this.veiculo = veiculo;
+        this.tipoViagem = tipoViagem;
+        this.remessas = remessas;
+    }
+
+    public Viagem(Long id, String dataCriacao, String dataProgramadaViagem, String dataRealizadoViagem, Double volumeTotal, Double pesoTotal, Double totalKilometragem, Double totalRemessa, Veiculo veiculo, TipoViagem tipoViagem) {
+        this.dataCriacao = dataCriacao;
+        this.dataProgramadaViagem = dataProgramadaViagem;
+        this.dataRealizadoViagem = dataRealizadoViagem;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.totalKilometragem = totalKilometragem;
+        this.totalRemessa = totalRemessa;
+        this.veiculo = veiculo;
+        this.tipoViagem = tipoViagem;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(String dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public String getDataProgramadaViagem() {
+        return dataProgramadaViagem;
+    }
+
+    public void setDataProgramadaViagem(String dataProgramadaViagem) {
+        this.dataProgramadaViagem = dataProgramadaViagem;
+    }
+
+    public String getDataRealizadoViagem() {
+        return dataRealizadoViagem;
+    }
+
+    public void setDataRealizadoViagem(String dataRealizadoViagem) {
+        this.dataRealizadoViagem = dataRealizadoViagem;
+    }
+
+    public Double getVolumeTotal() {
+        return volumeTotal;
+    }
+
+    public void setVolumeTotal(Double volumeTotal) {
+        this.volumeTotal = volumeTotal;
+    }
+
+    public Double getPesoTotal() {
+        return pesoTotal;
+    }
+
+    public void setPesoTotal(Double pesoTotal) {
+        this.pesoTotal = pesoTotal;
+    }
+
+    public Double getTotalKilometragem() {
+        return totalKilometragem;
+    }
+
+    public void setTotalKilometragem(Double totalKilometragem) {
+        this.totalKilometragem = totalKilometragem;
+    }
+
+    public Double getTotalRemessa() {
+        return totalRemessa;
+    }
+
+    public void setTotalRemessa(Double totalRemessa) {
+        this.totalRemessa = totalRemessa;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public TipoViagem getTipoViagem() {
+        return tipoViagem;
+    }
+
+    public void setTipoViagem(TipoViagem tipoViagem) {
+        this.tipoViagem = tipoViagem;
+    }
+
+    public List<Remessa> getRemessas() {
+        return remessas;
+    }
+
+    public void setRemessas(List<Remessa> remessas) {
+        this.remessas = remessas;
+    }
 }

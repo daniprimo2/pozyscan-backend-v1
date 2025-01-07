@@ -74,16 +74,7 @@ class JpaRemessaEntityTest {
         assertTrue(jpaRemessaEntity.getJpaNotaFiscalLogisticaEntities().contains(nota2));
     }
 
-    @Test
-    void deveAtualizarRemessaComDadosDoRequest() {
-        RemessaRequest request = RemessaRequest.builder()
-                .cliente("Cliente Atualizado")
-                .build();
 
-        jpaRemessaEntity.atualizarRemessa(request);
-
-        assertEquals("Cliente Atualizado", jpaRemessaEntity.getCliente());
-    }
 
     @Test
     void deveCriarRemessaUsandoConstrutor() {
@@ -126,7 +117,7 @@ class JpaRemessaEntityTest {
 
     @Test
     void deveValidarToString() {
-        String esperado = "Remessa(id=1, cliente=Cliente A, dataCriacao=2024-12-01, volumeTotal=120.5, pesoTotal=300.0, statusRemessa=VAZIA, viagem=null, notaFiscalLogisticas=[])";
+        String esperado = "JpaRemessaEntity(id=1, cliente=Cliente A, dataCriacao=2024-12-01, volumeTotal=120.5, pesoTotal=300.0, statusRemessa=VAZIA, jpaViagemEntity=null, jpaNotaFiscalLogisticaEntities=[])";
         assertEquals(esperado, jpaRemessaEntity.toString());
     }
 }

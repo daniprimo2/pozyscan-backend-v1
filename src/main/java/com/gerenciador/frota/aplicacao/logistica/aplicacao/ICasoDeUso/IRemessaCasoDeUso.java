@@ -1,15 +1,17 @@
 package com.gerenciador.frota.aplicacao.logistica.aplicacao.ICasoDeUso;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums.StatusRemessa;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request.RemessaRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.StatusRemessa;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.response.RemessaResponse;
 
 import java.util.List;
 
-public interface ICadastrarViagem {
+public interface IRemessaCasoDeUso {
 
-    Remessa cadastrarNovaRemessa(RemessaRequest request);
+    RemessaResponse cadastrarNovaRemessa(RemessaRequest request);
 
     List<Remessa> listarTodasRemessas();
 

@@ -31,7 +31,7 @@ public class UtilHtml {
         return emailContent;
     }
 
-    private static String htmlToString(String emailPath) {
+    protected static String htmlToString(String emailPath) {
 
         try {
             ClassPathResource resource = new ClassPathResource(emailPath);

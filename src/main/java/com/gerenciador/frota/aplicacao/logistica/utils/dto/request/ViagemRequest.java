@@ -1,8 +1,8 @@
-package com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request;
+package com.gerenciador.frota.aplicacao.logistica.utils.dto.request;
 
 import com.gerenciador.frota.aplicacao.Util.Data.DataUtils;
-import com.gerenciador.frota.aplicacao.logistica.dominio.model.Viagem;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums.TipoViagem;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaViagemEntity;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.TipoViagem;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,8 +19,8 @@ public class ViagemRequest {
     private LocalDate dataViagem;
     private TipoViagem tipoViagem;
 
-    public Viagem construirViagem() {
-        return Viagem.builder()
+    public JpaViagemEntity construirViagem() {
+        return JpaViagemEntity.builder()
                 .dataCriacao(DataUtils.converterLocalDateParaNossoPadraoData(LocalDate.now()))
                 .tipoViagem(this.tipoViagem)
                 .dataProgramadaViagem(DataUtils.converterLocalDateParaNossoPadraoData(this.dataViagem))

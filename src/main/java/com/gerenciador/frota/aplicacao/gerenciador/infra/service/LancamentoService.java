@@ -4,14 +4,18 @@ import com.gerenciador.frota.aplicacao.Util.Data.DataUtils;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.StatusLancamento;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.StatusPagamento;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.request.ConcluirPagamentoDTO;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.LancamentoRelatorioRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.LancamentoRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.ParcelaRelatorioRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.LancamentoRelatorioResponse;
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.ParcelaInfoResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.ParcelaRelatorioResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.response.SelectsResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.LancamentoRepository;
+import com.gerenciador.frota.aplicacao.gerenciador.infra.repository.ParcelaRepository;
 import com.gerenciador.frota.aplicacao.gerenciador.model.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +23,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@Slf4j
 public class LancamentoService {
     @Autowired
     private LancamentoRepository lancamentoRepository;
@@ -35,6 +40,9 @@ public class LancamentoService {
 
     @Autowired
     private NotaFiscalService notaFiscalService;
+
+    @Autowired
+    private ParcelaRepository parcelaRepository;
 
 
     public RetornoServicoBase registrarNovoLancamento(LancamentoRequest lancamentoRequest) {
@@ -84,16 +92,52 @@ public class LancamentoService {
                 parcelaRelatorioRequest.getDataVencimento(),
                 parcelaRelatorioRequest.getStatusPagamentos());
     }
-
     public RetornoServicoBase deletarLancamento(Long idLancamento) {
         try {
             lancamentoRepository.deleteById(idLancamento);
-            lancamentoRepository.deletarTodosAsParcelasExistentes(idLancamento);
+            parcelaRepository.deletarTodosAsParcelasExistentes(idLancamento);
             return RetornoServicoBase.positivo("Lancamento deletado com sucesso.");
         } catch (Exception e) {
             return RetornoServicoBase.negativo("Não foi possivel deletar lancamento.");
         }
 
 
+    }
+
+    public RetornoServicoBase   registrarPagamentoParcela(Long id, String notaFiscal) {
+        try {
+            log.info("[START] - Registrar pagamento da parcela da NF: " + notaFiscal);
+            parcelaRepository.registrarPagamento(id);
+            if (!isDeveAtualizarLancamento(notaFiscal)){
+                log.info("[START] - Atualizar o pagamentos para pago.");
+                 deveAtualizarStatusLancameno(notaFiscal);
+                deveAtualizarStatusNotaFiscal(notaFiscal);
+            }
+            return RetornoServicoBase.positivo("Pagamento Registrado com sucesso.");
+        } catch (Exception ex) {
+            return RetornoServicoBase.negativo("Erro ao registrar pagamento.");
+        }
+    }
+
+    private void deveAtualizarStatusNotaFiscal(String notaFiscal) {
+        notaFiscalService.atualizarStatusComoPago(notaFiscal);
+        log.info("[INFO] - Atualizar status da NF: " + notaFiscal);
+    }
+
+    private void deveAtualizarStatusLancameno(String numeroNotaFiscal) {
+        lancamentoRepository.atualizarStatusLancamento(numeroNotaFiscal);
+        log.info("[INFO] - Atualizar o status do lancamento.");
+    }
+
+    private boolean isDeveAtualizarLancamento(String numeroNotaFiscais) {
+        if (parcelaRepository.isTemParcelaParaSerPaga(numeroNotaFiscais).isEmpty()) {
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+    public List<ParcelaInfoResponse> testeParcela(String numeroNotaFiscais){
+        return parcelaRepository.isTemParcelaParaSerPaga(numeroNotaFiscais);
     }
 }

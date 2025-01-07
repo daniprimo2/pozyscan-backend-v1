@@ -10,8 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ViagemRepository extends JpaRepository<JpaViagemEntity, Long> {
+public interface JpaViagemRepository extends JpaRepository<JpaViagemEntity, Long> {
 
-    @Query(value = "select * from sc_logistica.tb_viagem v where LOWER(v.data_programada_viagem) LIKE LOWER(CONCAT('%', :dataProgramada, '%')) AND LOWER(v.tipo_viagem) LIKE LOWER(CONCAT('%', :tipoViagem, '%'))", nativeQuery = true)
-    List<JpaViagemEntity> findAllFiltro(@Param("dataProgramada") String dataProgramada, @Param("tipoViagem") TipoViagem tipoViagem);
+    @Query(value = "select * from sc_logistica.tb_viagem v " +
+            "where LOWER(v.data_programada_viagem) LIKE LOWER(CONCAT('%', :dataProgramada, '%')) " +
+            "AND LOWER(v.tipo_viagem) LIKE LOWER(CONCAT('%', :tipoViagem, '%'))", nativeQuery = true)
+    List<JpaViagemEntity> findAllFiltro(@Param("dataProgramada") String dataProgramada,
+                                        @Param("tipoViagem") TipoViagem tipoViagem);
 }

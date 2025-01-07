@@ -1,56 +1,75 @@
-package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.adapters;
+package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementacao;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaViagemEntity;
+import com.gerenciador.frota.aplicacao.logistica.dominio.model.Viagem;
 import com.gerenciador.frota.aplicacao.logistica.dominio.repositorysPorts.ViagemRepositoryPort;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.FiltroViagemRequest;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.ViagemRequest;
-import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.ViagemRepository;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.JpaViagemRepository;
+import com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers.*;
+
 @RequiredArgsConstructor
-@Component
+@Service
 @Slf4j
-public class ViagemRepositoryAdapters implements ViagemRepositoryPort {
+public class ViagemRepositoryImplementacao implements ViagemRepositoryPort {
 
 
-    private final ViagemRepository viagemRepository;
+    private final JpaViagemRepository jpaViagemRepository;
 
     @Override
-    public JpaViagemEntity salvar(ViagemRequest request) {
-        return viagemRepository.save(montarViagem(request));
+    public Viagem salvar(ViagemRequest request) {
+        JpaViagemEntity vaigemSalva = jpaViagemRepository.save(montarViagem(request));
+        return fromJpaViagemEntityToViagem(vaigemSalva);
     }
 
     @Override
-    public JpaViagemEntity salvar(JpaViagemEntity jpaViagemEntity) {
-        return viagemRepository.save(jpaViagemEntity);
+    public Viagem salvar(JpaViagemEntity jpaViagemEntity) {
+        return fromJpaViagemEntityToViagem(jpaViagemRepository.save(jpaViagemEntity));
     }
 
     @Override
-    public List<JpaViagemEntity> listar() {
-        return viagemRepository.findAll();
+    public List<Viagem> listar() {
+        return fromListaJpaViagensToListaViagem(jpaViagemRepository.findAll());
     }
 
     @Override
-    public List<JpaViagemEntity> listar(FiltroViagemRequest filtroRequest) {
-        return viagemRepository.findAllFiltro(filtroRequest.getDataViagemProgramada(),
+    public List<Viagem> listar(FiltroViagemRequest filtroRequest) {
+
+        System.out.println("Request aqui é: " + filtroRequest.toString());
+
+        List<JpaViagemEntity> allFiltro = jpaViagemRepository.findAllFiltro(filtroRequest.getDataViagemProgramada(),
+                filtroRequest.getTipoViagem());
+
+        System.out.println("Aqui ele trouxe: "+ allFiltro.size());
+
+
+        return allFiltro.stream().map(Mappers::fromJpaViagemEntityToViagem).toList();
+    }
+
+    public List<JpaViagemEntity> listars(FiltroViagemRequest filtroRequest) {
+        return jpaViagemRepository.findAllFiltro(filtroRequest.getDataViagemProgramada(),
                 filtroRequest.getTipoViagem());
     }
-
     @Override
-    public JpaViagemEntity buscarViagemPorId(Long codigoViagem) {
-        return viagemRepository.findById(codigoViagem)
+    public Viagem buscarViagemPorId(Long codigoViagem) {
+        return jpaViagemRepository.findById(codigoViagem)
+                .map(Mappers::fromJpaViagemEntityToViagem)
                 .orElseThrow(() -> new RuntimeException("Viagem não encontrada"));
     }
 
     @Override
     public RetornoServicoBase deletarViagemPorId(Long codigoViagem) {
         try {
-            viagemRepository.delete(buscarViagemPorId(codigoViagem));
+            jpaViagemRepository.delete(fromViagemToJpaViagemEntity(buscarViagemPorId(codigoViagem)));
             return RetornoServicoBase.positivo("Viagem deletada com sucesso.");
         } catch (Exception e) {
             return RetornoServicoBase.negativo("Não foi possivel deletar a viagem.");

@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "NotaFiscalGerenciador")
 @Table(name = "tb_nota_fiscal", schema = "sc_gerenciador")
 public class NotaFiscal {
 

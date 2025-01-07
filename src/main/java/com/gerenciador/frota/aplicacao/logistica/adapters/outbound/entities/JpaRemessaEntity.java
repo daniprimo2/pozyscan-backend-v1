@@ -1,6 +1,7 @@
 package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.StatusRemessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaRequest;
 import jakarta.persistence.*;
@@ -45,11 +46,7 @@ public class JpaRemessaEntity {
     private JpaViagemEntity jpaViagemEntity;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "remessa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "jpaRemessaEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<JpaNotaFiscalLogisticaEntity> jpaNotaFiscalLogisticaEntities = new ArrayList<>();
 
-    public JpaRemessaEntity atualizarRemessa(RemessaRequest request) {
-        this.cliente = request.getCliente();
-        return this;
-    }
 }

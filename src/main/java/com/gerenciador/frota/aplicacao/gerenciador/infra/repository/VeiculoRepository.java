@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.repository;
 
+import com.gerenciador.frota.aplicacao.gerenciador.dto.response.VeiculoResponse;
 import com.gerenciador.frota.aplicacao.gerenciador.model.Veiculo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,4 +41,14 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, String> {
                                                           @Param("categoria") Long categoria);
 
     Optional<Veiculo> findByPlaca(String placaVeiculo);
+
+    @Query(value = "select\n" +
+            "\tvc.placa_veiculo,\n" +
+            "\tvc.modelo_veiculo,\n" +
+            "\tsum(nf.valor_total) as dispesa_total\n" +
+            "from sc_gerenciador.tb_veiculo vc\n" +
+            "join sc_gerenciador.tb_lancamento lc on lc.veiculo_id_placa_veiculo = vc.placa_veiculo\n" +
+            "join sc_gerenciador.tb_nota_fiscal nf on nf.numero_nf = lc.numero_nf_numero_nf\n" +
+            "group by vc.placa_veiculo, vc.modelo_veiculo", nativeQuery = true)
+    List<VeiculoResponse> findInfosVeiculos();
 }

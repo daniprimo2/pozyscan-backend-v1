@@ -1,8 +1,6 @@
-package com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request;
+package com.gerenciador.frota.aplicacao.logistica.utils.dto.request;
 
-import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
-import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
-import jakarta.persistence.Column;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaNotaFiscalLogisticaEntity;
 import lombok.*;
 
 @Getter
@@ -16,8 +14,8 @@ public class NotaFiscalLogisticaRequest {
     private String numeroNotaFisal;
 
 
-    public NotaFiscalLogistica construirNotaFiscal() {
-        return NotaFiscalLogistica.builder()
+    public JpaNotaFiscalLogisticaEntity construirNotaFiscal() {
+        return JpaNotaFiscalLogisticaEntity.builder()
                 .numeroNotaFisal(this.numeroNotaFisal)
                 .build();
     }

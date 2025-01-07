@@ -1,8 +1,8 @@
-package com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request;
+package com.gerenciador.frota.aplicacao.logistica.utils.dto.request;
 
 import com.gerenciador.frota.aplicacao.Util.Data.DataUtils;
-import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums.StatusRemessa;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.StatusRemessa;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,8 +17,8 @@ public class RemessaRequest {
 
     private String cliente;
 
-    public Remessa construirRemessa() {
-        return Remessa.builder()
+    public JpaRemessaEntity construirRemessa() {
+        return JpaRemessaEntity.builder()
                 .statusRemessa(StatusRemessa.VAZIA)
                 .dataCriacao(DataUtils.converterLocalDateParaNossoPadraoData(LocalDate.now()))
                 .cliente(this.cliente)

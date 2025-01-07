@@ -207,7 +207,7 @@ class ColaboradorEntityControllerTest {
         mockMvc.perform(get("/api/colaboradores/lista"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").value(1))
-                .andExpect(jsonPath("$[0].dadosPessoais.nomeCompleto").value("Daniel Lopes Sousa Moreira"));
+                .andExpect(jsonPath("$[0].dadosPessoaisEntity.nomeCompleto").value("Daniel Lopes Sousa Moreira"));
 
         verify(gerenciarColaboradorCasoDeUso).listaDeColaboradores();
     }
@@ -221,7 +221,7 @@ class ColaboradorEntityControllerTest {
         mockMvc.perform(get("/api/colaboradores/buscar")
                         .param("codigoColaborador", String.valueOf(codigoColaborador)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.dadosPessoais.nomeCompleto").value("Daniel Lopes Sousa Moreira"));
+                .andExpect(jsonPath("$.dadosPessoaisEntity.nomeCompleto").value("Daniel Lopes Sousa Moreira"));
 
         verify(gerenciarColaboradorCasoDeUso).buscarColaboradorPorId(codigoColaborador);
     }

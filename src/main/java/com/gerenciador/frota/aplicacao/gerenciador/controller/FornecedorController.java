@@ -4,6 +4,7 @@ import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorFiltroRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.infra.service.FornecedorService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Gestão de Financeiro", description = "Controladores de gestao para para o Gerenciadores financeiros")
 @RestController
 @RequestMapping("/fornecedor")
 public class FornecedorController {

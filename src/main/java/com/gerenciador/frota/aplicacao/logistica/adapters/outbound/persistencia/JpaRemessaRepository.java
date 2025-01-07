@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RemessaRepository extends JpaRepository<JpaRemessaEntity, Long> {
+public interface JpaRemessaRepository extends JpaRepository<JpaRemessaEntity, Long> {
     @Query(value = "SELECT * FROM sc_logistica.tb_remessa rm where rm.status_remessa = :status", nativeQuery = true)
     List<JpaRemessaEntity> findAllStatus(@Param("status") String status);
 }

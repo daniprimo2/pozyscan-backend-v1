@@ -1,10 +1,13 @@
 package com.gerenciador.frota.aplicacao.logistica.aplicacao.casosDeUso;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
-import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.Remessa;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementacao.RemessaRepositoryImplementacao;
+import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.StatusRemessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.response.RemessaResponse;
+import com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,7 +18,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GerenciarJpaJpaRemessaCasoDeUsoTestEntityEntity {
+class GerenciarJpaJpaJpaRemessaCasoDeUsoTestEntityEntityEntity {
 
     private GerenciarRemessaCasoDeUso casoDeUso;
     private RemessaRepositoryImplementacao remessaRepositoryImplementacao;
@@ -31,13 +34,13 @@ class GerenciarJpaJpaRemessaCasoDeUsoTestEntityEntity {
         RemessaRequest request = RemessaRequest.builder()
                 .cliente("Cliente A")
                 .build();
-        Remessa remessa = Remessa.builder()
+        JpaRemessaEntity jpaRemessaEntity = JpaRemessaEntity.builder()
                 .cliente("Cliente A")
                 .build();
 
-        when(remessaRepositoryImplementacao.salvar(request)).thenReturn(remessa);
+        when(remessaRepositoryImplementacao.salvar(request)).thenReturn(Mappers.fromJpaRemessaEntityToRemessaResponse(jpaRemessaEntity));
 
-        Remessa resultado = casoDeUso.cadastrarNovaRemessa(request);
+        RemessaResponse resultado = casoDeUso.cadastrarNovaRemessa(request);
 
         assertNotNull(resultado);
         assertEquals("Cliente A", resultado.getCliente());
@@ -46,10 +49,15 @@ class GerenciarJpaJpaRemessaCasoDeUsoTestEntityEntity {
 
     @Test
     void deveListarTodasRemessasComSucesso() {
-        List<Remessa> jpaRemessaEntities = new ArrayList<>();
-        jpaRemessaEntities.add(Remessa.builder().cliente("Cliente A").build());
+//        List<JpaRemessaEntity> jpaJpaRemessaEntityEntities = new ArrayList<>();
+//        jpaJpaRemessaEntityEntities.add(JpaRemessaEntity.builder().cliente("Cliente A").build());
+        Remessa remessa = new Remessa();
+        remessa.setId(1L);
+        remessa.setCliente("Cliente A");
+        List<Remessa> jpaJpaRemessaEntityEntities = new ArrayList<>();
+        jpaJpaRemessaEntityEntities.add(remessa);
 
-        when(remessaRepositoryImplementacao.listarTodasRemessas()).thenReturn(jpaRemessaEntities);
+        when(remessaRepositoryImplementacao.listarTodasRemessas()).thenReturn(jpaJpaRemessaEntityEntities);
 
         List<Remessa> resultado = casoDeUso.listarTodasRemessas();
 
@@ -60,10 +68,15 @@ class GerenciarJpaJpaRemessaCasoDeUsoTestEntityEntity {
 
     @Test
     void deveListarRemessasPorStatusComSucesso() {
-        List<Remessa> jpaRemessaEntities = new ArrayList<>();
-        jpaRemessaEntities.add(Remessa.builder().statusRemessa(StatusRemessa.VAZIA).build());
+        Remessa remessa = new Remessa();
+        remessa.setId(1L);
+        remessa.setCliente("Cliente A");
+        remessa.setStatusRemessa(StatusRemessa.VAZIA);
 
-        when(remessaRepositoryImplementacao.listarTodasRemessasPorStatus(StatusRemessa.VAZIA)).thenReturn(jpaRemessaEntities);
+        List<Remessa> jpaJpaRemessaEntityEntities = new ArrayList<>();
+        jpaJpaRemessaEntityEntities.add(remessa);
+
+        when(remessaRepositoryImplementacao.listarTodasRemessasPorStatus(StatusRemessa.VAZIA)).thenReturn(jpaJpaRemessaEntityEntities);
 
         List<Remessa> resultado = casoDeUso.listarTodasRemessasPorTipo(StatusRemessa.VAZIA);
 
@@ -97,14 +110,14 @@ class GerenciarJpaJpaRemessaCasoDeUsoTestEntityEntity {
         remessa.setCliente("Cliente A");
 
         when(remessaRepositoryImplementacao.buscarRemessaPorId(1L)).thenReturn(remessa);
-        when(remessaRepositoryImplementacao.salvar(any(Remessa.class))).thenReturn(RetornoServicoBase.positivo("Atualizado com sucesso."));
+        when(remessaRepositoryImplementacao.salvar(any(JpaRemessaEntity.class))).thenReturn(RetornoServicoBase.positivo("Atualizado com sucesso."));
 
         RetornoServicoBase resultado = casoDeUso.atualziarRemessaPorId(1L, request);
 
         assertTrue(resultado.getFuncionou());
         assertEquals("Atualizado com sucesso.", resultado.getDescricao());
         verify(remessaRepositoryImplementacao, times(1)).buscarRemessaPorId(1L);
-        verify(remessaRepositoryImplementacao, times(1)).salvar(any(Remessa.class));
+        verify(remessaRepositoryImplementacao, times(1)).salvar(any(JpaRemessaEntity.class));
     }
 
     @Test

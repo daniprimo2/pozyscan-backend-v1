@@ -1,4 +1,4 @@
-package com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums;
+package com.gerenciador.frota.aplicacao.logistica.utils.dto.enums;
 
 import lombok.Getter;
 

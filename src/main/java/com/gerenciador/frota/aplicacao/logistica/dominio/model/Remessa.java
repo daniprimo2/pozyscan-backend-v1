@@ -1,55 +1,127 @@
-package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities;
+package com.gerenciador.frota.aplicacao.logistica.dominio.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.StatusRemessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaRequest;
-import jakarta.persistence.*;
-import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "TB_REMESSA", schema = "sc_logistica")
 public class Remessa {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cod_remessa")
     private Long id;
 
-    @Column(name = "nome_cliente")
     private String cliente;
 
-    @Column(name = "data_criacao")
     private String dataCriacao;
 
-    @Column(name = "volume_total")
     private Double volumeTotal;
 
-    @Column(name = "peso_total")
     private Double pesoTotal;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status_remessa")
     private StatusRemessa statusRemessa;
 
-    @ManyToOne
-    @JoinColumn(name = "viagem_id")
     private Viagem viagem;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "remessa", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NotaFiscalLogistica> notaFiscalLogisticas = new ArrayList<>();
 
-    public Remessa atualizarRemessa(RemessaRequest request) {
-        this.cliente = request.getCliente();
-        return this;
+    public Remessa() {
     }
+
+    public Remessa(String cliente, String dataCriacao, Double volumeTotal, Double pesoTotal, StatusRemessa statusRemessa, Viagem viagem, List<NotaFiscalLogistica> notaFiscalLogisticas) {
+        this.cliente = cliente;
+        this.dataCriacao = dataCriacao;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.statusRemessa = statusRemessa;
+        this.viagem = viagem;
+        this.notaFiscalLogisticas = notaFiscalLogisticas;
+    }
+
+    public Remessa(Long id, String cliente, String dataCriacao, Double volumeTotal, Double pesoTotal, StatusRemessa statusRemessa, Viagem viagem, List<NotaFiscalLogistica> notaFiscalLogisticas) {
+        this.id = id;
+        this.cliente = cliente;
+        this.dataCriacao = dataCriacao;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.statusRemessa = statusRemessa;
+        this.viagem = viagem;
+        this.notaFiscalLogisticas = notaFiscalLogisticas;
+    }
+
+    public Remessa(Long id, String cliente, String dataCriacao, Double volumeTotal, Double pesoTotal, StatusRemessa statusRemessa) {
+        this.id = id;
+        this.cliente = cliente;
+        this.dataCriacao = dataCriacao;
+        this.volumeTotal = volumeTotal;
+        this.pesoTotal = pesoTotal;
+        this.statusRemessa = statusRemessa;
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        this.cliente = cliente;
+    }
+
+    public String getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(String dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Double getVolumeTotal() {
+        return volumeTotal;
+    }
+
+    public void setVolumeTotal(Double volumeTotal) {
+        this.volumeTotal = volumeTotal;
+    }
+
+    public Double getPesoTotal() {
+        return pesoTotal;
+    }
+
+    public void setPesoTotal(Double pesoTotal) {
+        this.pesoTotal = pesoTotal;
+    }
+
+    public StatusRemessa getStatusRemessa() {
+        return statusRemessa;
+    }
+
+    public void setStatusRemessa(StatusRemessa statusRemessa) {
+        this.statusRemessa = statusRemessa;
+    }
+
+    public Viagem getViagem() {
+        return viagem;
+    }
+
+
+    public void setViagem(Viagem viagem) {
+        this.viagem = viagem;
+    }
+
+    public List<NotaFiscalLogistica> getNotaFiscalLogisticas() {
+        return notaFiscalLogisticas;
+    }
+
+    public void setNotaFiscalLogisticas(List<NotaFiscalLogistica> notaFiscalLogisticas) {
+        this.notaFiscalLogisticas = notaFiscalLogisticas;
+    }
+
 }

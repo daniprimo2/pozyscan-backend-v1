@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 
+import com.gerenciador.frota.aplicacao.Util.Utils.UtilPaginacao;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FilialRquest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FiltroFilialRequest;
@@ -35,29 +36,7 @@ public class FilialService {
     public PageImpl<?> buscarFiliaisComFiltro(FiltroFilialRequest filtroFilialRequest,
                                               Pageable pageable) {
         List<Filial> filiais = this.getFiliais(filtroFilialRequest);
-        List<Filial> filiaisPaginado = this.obterPaginacao(filiais,
-                pageable.getPageSize(),
-                pageable.getPageNumber());
-        Pageable pageableResponse = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        return new PageImpl<>(filiaisPaginado, pageableResponse, filiais.size());
-    }
-
-    private List<Filial> obterPaginacao(List<Filial> filiais, int pageSize, int pageNumber) {
-        if (pageNumber == 0)
-            pageNumber = 1;
-
-        int startIndex = (pageNumber - 1) * pageSize;
-        int emdIndex = Math.min(startIndex + pageSize, filiais.size());
-
-        if (emdIndex > filiais.size()) {
-            emdIndex = filiais.size();
-        }
-
-        if (startIndex < 0 || startIndex >= filiais.size() || emdIndex < 0) {
-            return new ArrayList<>();
-        }
-
-        return filiais.subList(startIndex, emdIndex);
+        return UtilPaginacao.obterPaginacao(filiais, pageable);
     }
 
     private List<Filial> getFiliais(FiltroFilialRequest filtroFilialRequest) {

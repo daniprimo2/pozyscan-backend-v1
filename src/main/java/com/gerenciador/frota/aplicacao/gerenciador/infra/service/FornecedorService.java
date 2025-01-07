@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 
+import com.gerenciador.frota.aplicacao.Util.Utils.UtilPaginacao;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorFiltroRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.FornecedorRequest;
@@ -64,29 +65,7 @@ public class FornecedorService {
     public PageImpl<?> buscarFiltroFornecedor(FornecedorFiltroRequest fornecedorFiltroRequest,
                                            Pageable pageable) {
         List<Fornecedor> fornecedor = this.getFornecedors(fornecedorFiltroRequest);
-        List<Fornecedor> fornecedoresPaginado = this.obterPaginacao(fornecedor,
-                pageable.getPageSize(),
-                pageable.getPageNumber());
-        Pageable pageable1Response = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        return new PageImpl<>(fornecedoresPaginado, pageable1Response, fornecedor.size());
-    }
-
-    private List<Fornecedor> obterPaginacao(List<Fornecedor> fornecedor, int pageSize, int pageNumber) {
-        if (pageNumber == 0)
-            pageNumber = 1;
-
-        int startIndex = (pageNumber - 1) * pageSize;
-        int emdIndex = Math.min(startIndex + pageSize, fornecedor.size());
-
-        if (emdIndex > fornecedor.size()) {
-            emdIndex = fornecedor.size();
-        }
-
-        if (startIndex < 0 || startIndex >= fornecedor.size() || emdIndex < 0) {
-            return new ArrayList<>();
-        }
-
-        return fornecedor.subList(startIndex, emdIndex);
+        return UtilPaginacao.obterPaginacao(fornecedor, pageable);
     }
 
     private List<Fornecedor> getFornecedors(FornecedorFiltroRequest fornecedorFiltroRequest) {

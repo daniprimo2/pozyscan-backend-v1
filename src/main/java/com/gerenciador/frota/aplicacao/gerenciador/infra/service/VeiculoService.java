@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 
+import com.gerenciador.frota.aplicacao.Util.Utils.UtilPaginacao;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.response.CategoriaResponse;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.response.TipoResponse;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.response.VeiculoResponse;
@@ -57,11 +58,7 @@ public class VeiculoService {
                     .categoria(categoria)
                     .build();
         }).toList();
-        List<VeiculoResponse> veiculoPaginado = this.obterPaginacao(listaTratada,
-                pageable.getPageSize(),
-                pageable.getPageNumber());
-        Pageable pageableResponse = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        return new PageImpl<>(veiculoPaginado, pageableResponse, veiculo.size());
+        return UtilPaginacao.obterPaginacao(listaTratada, pageable);
     }
 
     private List<VeiculoResponse> obterPaginacao(List<VeiculoResponse> veiculo, int pageSize, int pageNumber) {

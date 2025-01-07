@@ -1,6 +1,6 @@
-package com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.request;
+package com.gerenciador.frota.aplicacao.logistica.utils.dto.request;
 
-import com.gerenciador.frota.aplicacao.logistica.infraestrutura.dto.enums.TipoViagem;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.TipoViagem;
 import lombok.*;
 
 @Data

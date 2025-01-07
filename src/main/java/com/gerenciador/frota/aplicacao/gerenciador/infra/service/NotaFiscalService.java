@@ -141,4 +141,7 @@ public class NotaFiscalService {
         return infoNotas;
     }
 
+    public void atualizarStatusComoPago(String notaFiscal) {
+        notaFiscalRepository.updateStatusNotaFiscal(notaFiscal);
+    }
 }

@@ -1,39 +1,86 @@
-package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities;
+package com.gerenciador.frota.aplicacao.logistica.dominio.model;
 
 import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
-import jakarta.persistence.*;
-import lombok.*;
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity(name = "NotaFiscalLogistica")
-@Table(name = "TB_NOTA_FISCAL_logistica", schema = "sc_logistica")
 public class NotaFiscalLogistica {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "COD_NF")
     private Long codigoNotaFiscal;
 
-    @Column(name = "numero_nota_fiscal")
     private String numeroNotaFisal;
 
-    @Column(name = "valor_total")
     private Double valorTotal;
 
-    @Column(name = "data_emissao")
     private String dataEmissao;
 
-    @ManyToOne
-    @JoinColumn(name = "COD_REMESSA")
     private Remessa remessa;
 
-    @ManyToOne
-    @JoinColumn(name = "COD_ENDERECO")
     private Endereco endereco;
 
+    public NotaFiscalLogistica() {
+    }
 
+    public NotaFiscalLogistica(String numeroNotaFisal, Double valorTotal, String dataEmissao, Remessa remessa, Endereco endereco) {
+        this.numeroNotaFisal = numeroNotaFisal;
+        this.valorTotal = valorTotal;
+        this.dataEmissao = dataEmissao;
+        this.remessa = remessa;
+        this.endereco = endereco;
+    }
+
+    public NotaFiscalLogistica(Long codigoNotaFiscal, String numeroNotaFisal, Double valorTotal, String dataEmissao, Remessa remessa, Endereco endereco) {
+        this.codigoNotaFiscal = codigoNotaFiscal;
+        this.numeroNotaFisal = numeroNotaFisal;
+        this.valorTotal = valorTotal;
+        this.dataEmissao = dataEmissao;
+        this.remessa = remessa;
+        this.endereco = endereco;
+    }
+
+    public Long getCodigoNotaFiscal() {
+        return codigoNotaFiscal;
+    }
+
+    public void setCodigoNotaFiscal(Long codigoNotaFiscal) {
+        this.codigoNotaFiscal = codigoNotaFiscal;
+    }
+
+    public String getNumeroNotaFisal() {
+        return numeroNotaFisal;
+    }
+
+    public void setNumeroNotaFisal(String numeroNotaFisal) {
+        this.numeroNotaFisal = numeroNotaFisal;
+    }
+
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public String getDataEmissao() {
+        return dataEmissao;
+    }
+
+    public void setDataEmissao(String dataEmissao) {
+        this.dataEmissao = dataEmissao;
+    }
+
+    public Remessa getRemessa() {
+        return remessa;
+    }
+
+    public void setRemessa(Remessa remessa) {
+        this.remessa = remessa;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
+    }
 }

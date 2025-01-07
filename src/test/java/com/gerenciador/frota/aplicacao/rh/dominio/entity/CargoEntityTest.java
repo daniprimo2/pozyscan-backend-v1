@@ -73,7 +73,7 @@ class CargoEntityTest {
 
     @Test
     void deveValidarToString() {
-        String esperado = "Cargo(id=1, nomeCargo=Gerente, descricaoCargo=Gerencia a equipe, tipoCargo=GERENTE)";
-        assertEquals(esperado, cargoEntity.toString());
+        String esperado = "CargoEntity(id=1, nomeCargo=Gerente, descricaoCargo=Gerencia a equipe, tipoCargo=GERENTE)";
+         assertEquals(esperado, cargoEntity.toString());
     }
 }

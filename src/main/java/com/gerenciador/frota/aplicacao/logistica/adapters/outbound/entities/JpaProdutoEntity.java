@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "TB_PRODUTO", schema = "sc_logistica")
-public class Produto {
+public class JpaProdutoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +54,5 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(name = "nota_fiscal")
-    private NotaFiscalLogistica notaFiscalLogistica;
+    private JpaNotaFiscalLogisticaEntity jpaNotaFiscalLogisticaEntity;
 }

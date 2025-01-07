@@ -1,5 +1,6 @@
 package com.gerenciador.frota.aplicacao.gerenciador.infra.service;
 
+import com.gerenciador.frota.aplicacao.Util.Utils.UtilPaginacao;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.AplicacaoFiltroRequest;
 import com.gerenciador.frota.aplicacao.gerenciador.dto.request.AplicacaoRequest;
@@ -32,29 +33,7 @@ public class AplicacaoService {
     public PageImpl<?> buscarAplicacoesComFiltro(AplicacaoFiltroRequest aplicacaoFiltroRequest, Pageable pageable) {
 
         List<Aplicacao> aplicacoes = this.getAplicacoes(aplicacaoFiltroRequest);
-        List<Aplicacao> aplicacoesPaginado = this.obterPaginacao(aplicacoes,
-                pageable.getPageSize(),
-                pageable.getPageNumber());
-        Pageable pageableResponse = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        return new PageImpl<>(aplicacoesPaginado, pageableResponse, aplicacoes.size());
-    }
-
-    private List<Aplicacao> obterPaginacao(List<Aplicacao> aplicacoes, int pageSize, int pageNumber) {
-        if (pageNumber == 0)
-            pageNumber = 1;
-
-        int startIndex = (pageNumber - 1) * pageSize;
-        int emdIndex = Math.min(startIndex + pageSize, aplicacoes.size());
-
-        if (emdIndex > aplicacoes.size()) {
-            emdIndex = aplicacoes.size();
-        }
-
-        if (startIndex < 0 || startIndex >= aplicacoes.size() || emdIndex < 0) {
-            return new ArrayList<>();
-        }
-
-        return aplicacoes.subList(startIndex, emdIndex);
+        return UtilPaginacao.obterPaginacao(aplicacoes, pageable);
     }
 
     private List<Aplicacao> getAplicacoes(AplicacaoFiltroRequest aplicacaoFiltroRequest) {

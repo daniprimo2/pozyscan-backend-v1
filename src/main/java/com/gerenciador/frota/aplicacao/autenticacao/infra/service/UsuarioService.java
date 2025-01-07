@@ -2,6 +2,7 @@ package com.gerenciador.frota.aplicacao.autenticacao.infra.service;
 
 
 import com.gerenciador.frota.aplicacao.Util.Html.UtilHtml;
+import com.gerenciador.frota.aplicacao.Util.Utils.UtilPaginacao;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.ParametrosEmailRequest;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.RetornoServiceBaseDTO;
 import com.gerenciador.frota.aplicacao.autenticacao.dto.email.EmailService;
@@ -67,30 +68,9 @@ public class UsuarioService {
     }
 
 
-    public PageImpl<Usuario> buscarUsuarioComFiltro(FiltroUsuariosRquest filtroRquest, Pageable pageable) {
+    public PageImpl<?> buscarUsuarioComFiltro(FiltroUsuariosRquest filtroRquest, Pageable pageable) {
         List<Usuario> usuarios = this.getUsuarios(filtroRquest);
-        List<Usuario> usuariosPaginado = this.obterPaginacao(usuarios, pageable.getPageSize(), pageable.getPageNumber());
-        Pageable pageable1Response = PageRequest.of(pageable.getPageNumber() - 1, pageable.getPageSize());
-        return new PageImpl<>(usuariosPaginado, pageable1Response, usuarios.size());
-    }
-
-    private List<Usuario> obterPaginacao(List<Usuario> usuarios, int pageSize, int pageNumber) {
-        if (pageNumber == 0)
-            pageNumber = 1;
-
-        int startIndex = (pageNumber - 1) * pageSize;
-        int emdIndex = Math.min(startIndex + pageSize, usuarios.size());
-
-        if (emdIndex > usuarios.size()) {
-            emdIndex = usuarios.size();
-        }
-
-        if (startIndex < 0 || startIndex >= usuarios.size() || emdIndex < 0) {
-            return new ArrayList<>();
-        }
-
-
-        return usuarios.subList(startIndex, emdIndex);
+        return UtilPaginacao.obterPaginacao(usuarios, pageable);
     }
 
     private List<Usuario> getUsuarios(FiltroUsuariosRquest filtroRquest) {
