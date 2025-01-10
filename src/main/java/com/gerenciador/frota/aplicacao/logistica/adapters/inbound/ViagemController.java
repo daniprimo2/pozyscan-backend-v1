@@ -47,8 +47,7 @@ public class ViagemController {
      * Endpoint para cadastrar uma nova viagem
      *
      * <p>Este método recebe um objeto {@link ViagemRequest} validado, processa a criação
-     * de uma nova viagem no sistema
-     * e retorna a entidade viagem criada.</p>
+     * de uma nova viagem no sistema e retorna a entidade viagem criada.</p>
      *
      * @return {@link ResponseEntity} contendo a viagem criado e o status HTTP 201 (CREATED).
      */
