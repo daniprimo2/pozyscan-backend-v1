@@ -25,7 +25,6 @@ import java.util.List;
 
 /**
  *
- *  somente para testar
  *
  * Classe responsável por expor os endpoints relacionados ao gerenciamento das viagens programadas e outras atualizacoes
  *
