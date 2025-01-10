@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ *
+ *  somente para testar
+ *
  * Classe responsável por expor os endpoints relacionados ao gerenciamento das viagens programadas e outras atualizacoes
  *
  * <p>Esta classe faz parte da camada de infraestrutura do sistema, conectando as requisições
