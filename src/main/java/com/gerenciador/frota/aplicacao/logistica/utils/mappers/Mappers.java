@@ -115,7 +115,7 @@ public class Mappers {
 
     public static Produto fromJpaProdutoEntityToProduto(JpaProdutoEntity produtoSalvo) {
         return new Produto(
-                null,
+                produtoSalvo.getCodigoProduto(),
                 produtoSalvo.getNomeProduto(),
                 produtoSalvo.getDescricaoProduto(),
                 produtoSalvo.getTipoProduto(),

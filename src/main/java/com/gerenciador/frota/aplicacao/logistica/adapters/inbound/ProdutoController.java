@@ -2,12 +2,9 @@ package com.gerenciador.frota.aplicacao.logistica.adapters.inbound;
 
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
-import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
 import com.gerenciador.frota.aplicacao.logistica.aplicacao.casosDeUso.GerenciarProdutoCasoDeUso;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Produto;
-import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.ProdutoRequest;
-import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
