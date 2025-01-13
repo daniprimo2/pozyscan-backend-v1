@@ -1,8 +1,9 @@
 package com.gerenciador.frota.aplicacao.logistica.dominio.model;
 
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.enums.TipoProduto;
+import lombok.Builder;
 
-
+@Builder
 public class Produto {
 
     private Long codigoProduto;

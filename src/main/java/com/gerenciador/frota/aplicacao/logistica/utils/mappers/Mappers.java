@@ -72,7 +72,7 @@ public class Mappers {
         nf.setNumeroNotaFisal(notaFiscalLogistica.getNumeroNotaFisal());
         nf.setValorTotal(notaFiscalLogistica.getValorTotal());
         nf.setDataEmissao(notaFiscalLogistica.getDataEmissao());
-        nf.setRemessa(fromJpaRemessaEntityToRemessa(notaFiscalLogistica.getJpaRemessaEntity()));
+        nf.setRemessa(notaFiscalLogistica.getJpaRemessaEntity() == null ? null : fromJpaRemessaEntityToRemessa(notaFiscalLogistica.getJpaRemessaEntity()));
         nf.setEndereco(notaFiscalLogistica.getEndereco());
         return nf;
     }
@@ -129,6 +129,22 @@ public class Mappers {
                 produtoSalvo.getComprimento(),
                 null);
     }
+    public static Produto fromComCodigoJpaProdutoEntityToProduto(JpaProdutoEntity produtoSalvo) {
+        return new Produto(
+                produtoSalvo.getCodigoProduto(),
+                produtoSalvo.getNomeProduto(),
+                produtoSalvo.getDescricaoProduto(),
+                produtoSalvo.getTipoProduto(),
+                produtoSalvo.getPesoLiquido(),
+                produtoSalvo.getPesoBruto(),
+                produtoSalvo.getQuantidade(),
+                produtoSalvo.getValorLiquido(),
+                produtoSalvo.getValorBruto(),
+                produtoSalvo.getLargura(),
+                produtoSalvo.getAltura(),
+                produtoSalvo.getComprimento(),
+                produtoSalvo.getJpaNotaFiscalLogisticaEntity() == null ? null :Mappers.fromNotaFiscalLogisticaToNotaFiscal(produtoSalvo.getJpaNotaFiscalLogisticaEntity()));
+    }
 
     public static List<Produto> fromListJpaProdutoEntityToListProduto(List<JpaProdutoEntity> todosProdutos) throws NoSuchMethodException {
         try {
@@ -164,5 +180,22 @@ public class Mappers {
 //        nf.setRemessa(fromJpaRemessaEntityToRemessa(notaFiscalLogistica.getJpaRemessaEntity()));
         nf.setEndereco(notaFiscalLogistica.getEndereco());
         return nf;
+    }
+
+    public static JpaProdutoEntity fromComCodigoProdutoRequestToProduto(Produto produto) {
+        return new JpaProdutoEntity(
+                produto.getCodigoProduto(),
+                produto.getNomeProduto(),
+                produto.getDescricaoProduto(),
+                produto.getTipoProduto(),
+                produto.getPesoLiquido(),
+                produto.getPesoBruto(),
+                produto.getQuantidade(),
+                produto.getValorLiquido(),
+                produto.getValorBruto(),
+                produto.getLargura(),
+                produto.getAltura(),
+                produto.getComprimento(),
+                produto.getNotaFiscalLogistica() == null ? null : Mappers.fromNotaFiscalLogisticaToNotaFiscalEntity(produto.getNotaFiscalLogistica()));
     }
 }

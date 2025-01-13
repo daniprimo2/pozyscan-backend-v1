@@ -2,7 +2,6 @@ package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementaca
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaProdutoEntity;
-import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaViagemEntity;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.JpaProdutoRepository;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Produto;
 import com.gerenciador.frota.aplicacao.logistica.dominio.repositorysPorts.ProdutoRepositoryPort;
@@ -59,7 +58,7 @@ public class ProdutoRepositoryImplementacao implements ProdutoRepositoryPort {
     public Produto buscarProdutoPorCodigo(Long codigoProduto) {
             log.info("[START] - Buscar o produto de codigo: {}.", codigoProduto);
             var produto = produtoRepository.findById(codigoProduto)
-                    .map(Mappers::fromJpaProdutoEntityToProduto)
+                    .map(Mappers::fromComCodigoJpaProdutoEntityToProduto)
                     .orElseThrow(() -> {
                         log.info("[ERRO] - Erro ao buscar o produto por codigo {}.", codigoProduto);
                         return new RuntimeException("Produto não encontrado.");
@@ -107,7 +106,7 @@ public class ProdutoRepositoryImplementacao implements ProdutoRepositoryPort {
         produto.setLargura(request.getDimensaoProdutoRequest().getLargura());
         produto.setValorLiquido(request.getPrecoProdutoRequest().getValorLiquido());
         produto.setValorBruto(request.getPrecoProdutoRequest().getValorBruto());
-        return Mappers.fromProdutoRequestToProduto(produto);
+        return Mappers.fromComCodigoProdutoRequestToProduto(produto);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class ProdutoRepositoryImplementacao implements ProdutoRepositoryPort {
         try {
             log.info("[START] - Deletar produto de id: {}", codigoProduto);
             Produto produto = this.buscarProdutoPorCodigo(codigoProduto);
-            produtoRepository.delete(Mappers.fromProdutoRequestToProduto(produto));
+            produtoRepository.delete(Mappers.fromComCodigoProdutoRequestToProduto(produto));
             log.info("[END] - Sucesso ao deletar o produto de id: {}", codigoProduto);
             return RetornoServicoBase.positivo("Produto " + produto.getNomeProduto() + " deletado com sucesso.");
         } catch (Exception ex) {
