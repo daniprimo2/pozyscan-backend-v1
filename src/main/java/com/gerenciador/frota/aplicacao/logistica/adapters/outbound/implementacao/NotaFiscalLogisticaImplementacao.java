@@ -8,7 +8,9 @@ import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
 import com.gerenciador.frota.aplicacao.logistica.dominio.repositorysPorts.NotaFiscalLogisticaRepositoryPort;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.NotaFiscalLogisticaRequest;
+import com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers;
 import com.gerenciador.frota.aplicacao.logistica.utils.mappers.MappersDominio;
+import com.gerenciador.frota.aplicacao.logistica.utils.mappers.MappersJpaEntity;
 import com.gerenciador.frota.aplicacao.logistica.utils.mappers.MappersRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,7 @@ public class NotaFiscalLogisticaImplementacao implements NotaFiscalLogisticaRepo
                     .save(MappersRequest
                     .fromNotaFiscaLogisticaToJpaNotaFiscalLogisticaEntity(
                             request,
-                            request.getEnderecoRequest()
-                                    .getCep() == null
+                            request.getEnderecoRequest() == null
                                     ? null : MappersDominio
                                     .fromEnderecoRequestToEndereco(request
                                             .getEnderecoRequest(),
@@ -51,21 +52,65 @@ public class NotaFiscalLogisticaImplementacao implements NotaFiscalLogisticaRepo
 
     @Override
     public List<NotaFiscalLogistica> buscarTodasNotasFiscais() {
-        return null;
+            log.info("[START] - Buscar todas as notas fiscais.");
+        try {
+            var todasNotasFiscais = notaFiscalLogisticaRepository.findAll();
+            log.info("[INFO] - Foi encontrado {} notas fiscais.", todasNotasFiscais.size());
+            log.info("[INFO] - Converter lista de model para a jpa entity.");
+            var listaNotaFiscalConvertidaParaModel = MappersDominio.fromListNotaFiscalToListJpaNotaFiscalEntity(todasNotasFiscais);
+            log.info("[END] - Lista convertida para uma lista de  models.");
+            return listaNotaFiscalConvertidaParaModel;
+        } catch (Exception ex) {
+            log.info("[ERRO] - Falhou ao buscar todas notas fiscais.");
+            throw new RuntimeException("Falhou ao buscar todas as notas fiscais.");
+        }
     }
 
     @Override
     public NotaFiscalLogistica buscarNotasFiscaisPorCodigo(Long codigoNotaFiscal) {
-        return null;
+        log.info("[START] - Buscar Nota Fiscal pelo codigo: {}.",codigoNotaFiscal);
+            var notaFiscal = notaFiscalLogisticaRepository.findById(codigoNotaFiscal)
+                    .orElseThrow(() -> new RuntimeException("Nota Fiscal não encontrada."));
+            log.info("[END] - Nota fiscal encontrada: "+codigoNotaFiscal+".");
+            return MappersDominio.fromJpaNotaFiscalLogisticaEntityToNotaFiscalLogistica(notaFiscal);
+    }
+
+    public JpaNotaFiscalLogisticaEntity buscarNotasFiscaisPorCodigoJpa(Long codigoNotaFiscal) {
+        log.info("[START] - Buscar Nota Fiscal pelo codigo: {}.",codigoNotaFiscal);
+        var notaFiscal = notaFiscalLogisticaRepository.findById(codigoNotaFiscal)
+                .orElseThrow(() -> new RuntimeException("Nota Fiscal não encontrada."));
+        log.info("[END] - Nota fiscal encontrada: "+codigoNotaFiscal+".");
+        return notaFiscal;
     }
 
     @Override
     public RetornoServicoBase atualziarNotaFiscal(Long codigoNotaFiscal, NotaFiscalLogisticaRequest request) {
-        return null;
+        try {
+            log.info("[START] - Atualizar nota fiscal de codigo: {}", codigoNotaFiscal);
+            var notaFiscalLogisticaRecuperado = this.buscarNotasFiscaisPorCodigo(codigoNotaFiscal);
+            log.info("[INFO] - Nota fiscal de codigo: {} encontrada com sucesso.", codigoNotaFiscal);
+            var notaFiscalAtualizado = MappersJpaEntity.fromNotaFiscalRequestToJpaNotaFiscalLogisticaEntity(request, notaFiscalLogisticaRecuperado);
+            log.info("[INFO] - Entity foi atualizada pacote pronto para salvar.");
+            notaFiscalLogisticaRepository.save(notaFiscalAtualizado);
+            log.info("[END] - Nota fiscal atualizada com sucesso.");
+            return RetornoServicoBase.positivo("Nota fiscal codigo: "+codigoNotaFiscal+" e numero: "+request.getNumeroNotaFisal()+" atualizada com sucesso.");
+        } catch (Exception ex) {
+            log.info("[ERRO] - Falhou ao atualziar nota fiscal.");
+            return RetornoServicoBase.negativo("Falhou ao atualizar a Nota fiscal codigo: "+codigoNotaFiscal+".");
+        }
     }
 
     @Override
     public RetornoServicoBase deletarNotaFiscal(Long codigoNotaFiscal) {
-        return null;
-    }
+        try {
+            log.info("[START] - Deletar nota fiscal de codigo: {}", codigoNotaFiscal);
+            var notaFiscalLogistica = this.buscarNotasFiscaisPorCodigoJpa(codigoNotaFiscal);
+            log.info("[END] - Deletar nota fiscal de codigo: {}.", codigoNotaFiscal);
+            notaFiscalLogisticaRepository.delete(notaFiscalLogistica);
+            log.info("[END] - Nota fiscal atualizada com sucesso.");
+            return RetornoServicoBase.positivo("Nota fiscal codigo: "+codigoNotaFiscal+" deletado com sucesso.");
+        } catch (Exception ex) {
+            log.info("[ERRO] - Falhou ao deletar nota fiscal.");
+            return RetornoServicoBase.negativo("Falhou ao deletar a Nota fiscal codigo: "+codigoNotaFiscal+".");
+        }    }
 }

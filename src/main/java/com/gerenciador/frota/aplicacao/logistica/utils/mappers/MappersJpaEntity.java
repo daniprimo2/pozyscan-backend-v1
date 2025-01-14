@@ -4,6 +4,7 @@ import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaN
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaRemessaEntity;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
+import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.NotaFiscalLogisticaRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -43,6 +44,28 @@ public class MappersJpaEntity {
                 .statusRemessa(remessa.getStatusRemessa())
                 .jpaViagemEntity(fromViagemToJpaViagemEntity(remessa.getViagem()))
                 .jpaNotaFiscalLogisticaEntities(listasNfs)
+                .build();
+    }
+
+    public static JpaNotaFiscalLogisticaEntity fromNotaFiscalRequestToJpaNotaFiscalLogisticaEntity(NotaFiscalLogistica notaFiscalLogisticaRecuperado) {
+        return JpaNotaFiscalLogisticaEntity.builder()
+                .jpaRemessaEntity(notaFiscalLogisticaRecuperado.getRemessa() == null ? null : MappersJpaEntity.fromRemessaToJpaRemessaEntity(notaFiscalLogisticaRecuperado.getRemessa()))
+                .numeroNotaFisal(notaFiscalLogisticaRecuperado.getNumeroNotaFisal())
+                .codigoNotaFiscal(notaFiscalLogisticaRecuperado.getCodigoNotaFiscal())
+                .endereco(notaFiscalLogisticaRecuperado.getEndereco())
+                .dataEmissao(notaFiscalLogisticaRecuperado.getDataEmissao())
+                .valorTotal(notaFiscalLogisticaRecuperado.getValorTotal())
+                .build();
+    }
+
+    public static JpaNotaFiscalLogisticaEntity fromNotaFiscalRequestToJpaNotaFiscalLogisticaEntity(NotaFiscalLogisticaRequest request, NotaFiscalLogistica notaFiscalLogistica) {
+        return JpaNotaFiscalLogisticaEntity.builder()
+                .jpaRemessaEntity(notaFiscalLogistica.getRemessa() == null ? null : MappersJpaEntity.fromRemessaToJpaRemessaEntity(notaFiscalLogistica.getRemessa()))
+                .numeroNotaFisal(request.getNumeroNotaFisal())
+                .endereco(request.getEnderecoRequest() == null ? null : MappersDominio.fromEnderecoRequestToEndereco(request.getEnderecoRequest()))
+                .dataEmissao(request.getDataEmissao())
+                .valorTotal(request.getValorTotal())
+                .codigoNotaFiscal(notaFiscalLogistica.getCodigoNotaFiscal())
                 .build();
     }
 }

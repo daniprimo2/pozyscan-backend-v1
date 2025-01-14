@@ -13,7 +13,7 @@ public class MappersRequest {
                 .numeroNotaFisal(request.getNumeroNotaFisal())
                 .dataEmissao(request.getDataEmissao())
                 .valorTotal(request.getValorTotal())
-                .endereco(endereco)
+                .endereco(endereco == null ? null : endereco)
                 .build();
     }
 }

@@ -12,6 +12,9 @@ import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Viagem;
 import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.Request.EnderecoRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MappersDominio {
 
     public static NotaFiscalLogistica fromJpaNotaFiscalLogisticaEntityToNotaFiscalLogistica(JpaNotaFiscalLogisticaEntity notaFiscalLogisticaEntity) {
@@ -19,7 +22,7 @@ public class MappersDominio {
                 notaFiscalLogisticaEntity.getNumeroNotaFisal(),
                 notaFiscalLogisticaEntity.getValorTotal(),
                 notaFiscalLogisticaEntity.getDataEmissao(),
-                MappersDominio.fromJpaRemessaEntityToRemessa(notaFiscalLogisticaEntity.getJpaRemessaEntity()),
+                notaFiscalLogisticaEntity.getJpaRemessaEntity() == null ? null : MappersDominio.fromJpaRemessaEntityToRemessa(notaFiscalLogisticaEntity.getJpaRemessaEntity()),
                 notaFiscalLogisticaEntity.getEndereco());
     }
 
@@ -74,5 +77,14 @@ public class MappersDominio {
                 .complemento(enderecoRequest.getComplemento())
                 .numero(enderecoRequest.getNumero())
                 .build();
+    }
+
+    public static List<NotaFiscalLogistica> fromListNotaFiscalToListJpaNotaFiscalEntity(List<JpaNotaFiscalLogisticaEntity> todasNotasFiscais) {
+        List<NotaFiscalLogistica> listaNotaFiscal = new ArrayList<>();
+        for (JpaNotaFiscalLogisticaEntity todasNotasFiscai : todasNotasFiscais) {
+            listaNotaFiscal
+                    .add(fromJpaNotaFiscalLogisticaEntityToNotaFiscalLogistica(todasNotasFiscai));
+        }
+        return listaNotaFiscal;
     }
 }
