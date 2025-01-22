@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Entity(name = "NotaFiscalLogistica")
 @Table(name = "TB_NOTA_FISCAL_logistica", schema = "sc_logistica")
 public class JpaNotaFiscalLogisticaEntity {

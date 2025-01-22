@@ -1,11 +1,16 @@
 package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementacao;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
+import com.gerenciador.frota.aplicacao.integracoes.dto.response.EnderecoResponse;
 import com.gerenciador.frota.aplicacao.integracoes.infra.ViaCepSerive;
+import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
+import com.gerenciador.frota.aplicacao.integracoes.repository.EnderecoRepository;
+import com.gerenciador.frota.aplicacao.integracoes.service.EnderecoService;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaNotaFiscalLogisticaEntity;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.JpaNotaFiscalLogisticaRepository;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.NotaFiscalLogisticaRequest;
+import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.Request.EnderecoRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,6 +27,8 @@ class NotaFiscalLogisticaImplementacaoTest {
 
     @Mock
     private JpaNotaFiscalLogisticaRepository notaFiscalLogisticaRepository;
+    @Mock
+    private EnderecoRepository enderecoRepository;
 
     @Mock
     private ViaCepSerive viaCepSerive;
@@ -37,10 +44,41 @@ class NotaFiscalLogisticaImplementacaoTest {
     @Test
     void cadastrarNotaFiscal() {
         // Arrange
+        EnderecoRequest enderecoRequest = new EnderecoRequest(
+                "12345678",
+                "Rua Nova",
+                "100",
+                "Centro",
+                "São Paulo",
+                "SP",
+                "São Paulo",
+                "Apt 101");
+
+        Endereco endereco = new Endereco(
+                6L,
+                "12345678",
+                "Rua Nova",
+                "100",
+                "Centro",
+                "São Paulo",
+                "SP",
+                "São Paulo",
+                "Apt 101");
+
+        EnderecoResponse enderecoResponse = new EnderecoResponse(
+                "12345678",
+                "Rua Nova",
+                "Centro",
+                "São Paulo",
+                "SP",
+                "São Paulo",
+                "Apt 101");
+
         NotaFiscalLogisticaRequest request = NotaFiscalLogisticaRequest.builder()
                 .numeroNotaFisal("123456")
                 .valorTotal(1000.0)
                 .dataEmissao("2025-01-01")
+                .enderecoRequest(enderecoRequest)
                 .build();
 
         JpaNotaFiscalLogisticaEntity savedEntity = JpaNotaFiscalLogisticaEntity.builder()
@@ -48,10 +86,13 @@ class NotaFiscalLogisticaImplementacaoTest {
                 .numeroNotaFisal("123456")
                 .valorTotal(1000.0)
                 .dataEmissao("2025-01-01")
+                .endereco(endereco)
                 .build();
 
-        when(notaFiscalLogisticaRepository.save(any(JpaNotaFiscalLogisticaEntity.class)))
-                .thenReturn(savedEntity);
+        when(viaCepSerive.buscarEnderecoPorCep("12345678"))
+                .thenReturn(enderecoResponse);
+        when(enderecoRepository.save(any(Endereco.class))).thenReturn(endereco);
+        when(notaFiscalLogisticaRepository.save(any(JpaNotaFiscalLogisticaEntity.class))).thenReturn(savedEntity);
 
         // Act
         NotaFiscalLogistica result = notaFiscalLogisticaImplementacao.cadastrarNotaFiscal(request);
@@ -59,6 +100,8 @@ class NotaFiscalLogisticaImplementacaoTest {
         // Assert
         assertNotNull(result);
         assertEquals("123456", result.getNumeroNotaFisal());
+        assertEquals(1000.0, result.getValorTotal());
+        verify(enderecoRepository, times(1)).save(any(Endereco.class));
         verify(notaFiscalLogisticaRepository, times(1)).save(any(JpaNotaFiscalLogisticaEntity.class));
     }
 

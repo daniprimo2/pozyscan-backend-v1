@@ -42,7 +42,7 @@ public class NotaFiscalLogiscaController {
      *
      * <p>Este método recebe um objeto {@link NotaFiscalLogisticaRequest} validado, processa a criação
      * de uma nova nota fiscal no sistema e retorna a Nota Fiscal.</p>
-     *
+     -tre
      * @return {@link ResponseEntity<JpaNotaFiscalLogisticaEntity>} contendo a viagem criado e o status HTTP 201 (CREATED).
      */
     @Operation(summary = "Registrar uma nova nota fiscal", description = "Endpoint deve cadastrar uma nova nota fiscal.")

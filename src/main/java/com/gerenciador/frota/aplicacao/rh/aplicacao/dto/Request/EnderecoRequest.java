@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class EnderecoRequest {
 
     @NotBlank(message = "Deve ser informado o cep.")

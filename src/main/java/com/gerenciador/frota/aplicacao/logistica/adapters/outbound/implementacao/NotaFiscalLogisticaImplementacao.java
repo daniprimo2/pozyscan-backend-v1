@@ -3,6 +3,7 @@ package com.gerenciador.frota.aplicacao.logistica.adapters.outbound.implementaca
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.integracoes.infra.ViaCepSerive;
 import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
+import com.gerenciador.frota.aplicacao.integracoes.repository.EnderecoRepository;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaNotaFiscalLogisticaEntity;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.JpaNotaFiscalLogisticaRepository;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
@@ -24,29 +25,29 @@ import java.util.List;
 public class NotaFiscalLogisticaImplementacao implements NotaFiscalLogisticaRepositoryPort {
 
     private final JpaNotaFiscalLogisticaRepository notaFiscalLogisticaRepository;
+    private final EnderecoRepository enderecoRepository;
     private final ViaCepSerive viaCepSerive;
 
     @Override
     public NotaFiscalLogistica cadastrarNotaFiscal(NotaFiscalLogisticaRequest request) {
         log.info("[START] - Inicio de cadastrar uma nova nota fiscal.");
         try {
+            Endereco endereco = MappersDominio.fromEnderecoRequestToEndereco(request.getEnderecoRequest(), viaCepSerive);
+            log.info("[INFO] - Salvar endereco.");
+            Endereco enderecoSalvo = enderecoRepository.save(endereco);
+            log.info("[INFO] - Salvar endereco com o id: {} e cep: {}.", enderecoSalvo.getCodigoEndereco(), enderecoSalvo.getCep());
+            JpaNotaFiscalLogisticaEntity entity = MappersRequest.fromNotaFiscaLogisticaToJpaNotaFiscalLogisticaEntity(request,request.getEnderecoRequest() == null ? null : enderecoSalvo);
 
+            log.info("[INFO] - Entity que esta sendo salvo: {}", entity);
             var notaFiscalSalvo = notaFiscalLogisticaRepository
-                    .save(MappersRequest
-                    .fromNotaFiscaLogisticaToJpaNotaFiscalLogisticaEntity(
-                            request,
-                            request.getEnderecoRequest() == null
-                                    ? null : MappersDominio
-                                    .fromEnderecoRequestToEndereco(request
-                                            .getEnderecoRequest(),
-                                            viaCepSerive)));
+                    .save(entity);
 
             log.info("[END] - Nota fiscal foi salvo.");
             return MappersDominio
                     .fromJpaNotaFiscalLogisticaEntityToNotaFiscalLogistica(notaFiscalSalvo);
         } catch (Exception ex) {
-            log.info("[ERRO] - Falhou ao gerar uma nova Nota fiscal.");
-            throw new RuntimeException("Falhou ao salvar uma nova nota fiscal.");
+            log.info("[ERRO] - Falhou ao gerar uma nova Nota fiscal. {}", ex.getMessage());
+            throw new RuntimeException("Falhou ao salvar uma nova nota fiscal. ");
         }
     }
 
@@ -90,6 +91,8 @@ public class NotaFiscalLogisticaImplementacao implements NotaFiscalLogisticaRepo
             var notaFiscalLogisticaRecuperado = this.buscarNotasFiscaisPorCodigo(codigoNotaFiscal);
             log.info("[INFO] - Nota fiscal de codigo: {} encontrada com sucesso.", codigoNotaFiscal);
             var notaFiscalAtualizado = MappersJpaEntity.fromNotaFiscalRequestToJpaNotaFiscalLogisticaEntity(request, notaFiscalLogisticaRecuperado);
+            Endereco enderecoAtualizado = enderecoRepository.save(notaFiscalAtualizado.getEndereco());
+            notaFiscalAtualizado.setEndereco(enderecoAtualizado);
             log.info("[INFO] - Entity foi atualizada pacote pronto para salvar.");
             notaFiscalLogisticaRepository.save(notaFiscalAtualizado);
             log.info("[END] - Nota fiscal atualizada com sucesso.");

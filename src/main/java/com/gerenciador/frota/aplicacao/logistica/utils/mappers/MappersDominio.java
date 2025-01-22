@@ -11,10 +11,12 @@ import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogisti
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Remessa;
 import com.gerenciador.frota.aplicacao.logistica.dominio.model.Viagem;
 import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.Request.EnderecoRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 public class MappersDominio {
 
     public static NotaFiscalLogistica fromJpaNotaFiscalLogisticaEntityToNotaFiscalLogistica(JpaNotaFiscalLogisticaEntity notaFiscalLogisticaEntity) {
@@ -66,8 +68,11 @@ public class MappersDominio {
     }
 
     public static Endereco fromEnderecoRequestToEndereco(EnderecoRequest enderecoRequest, ViaCepSerive viaCepSerive) {
+        log.info("[START] - Buscar no via cep o endereco do cep: {}.", enderecoRequest.getCep());
         EnderecoResponse enderecoResponse = viaCepSerive.buscarEnderecoPorCep(enderecoRequest.getCep());
+        log.info("[INFO] - Endereco do cep {} foi encontrado: {}.", enderecoRequest.getCep(), enderecoResponse);
         return Endereco.builder()
+                .logradouro(enderecoRequest.getLogradouro())
                 .localidade(enderecoResponse.getLocalidade())
                 .estado(enderecoResponse.getEstado())
                 .complemento(enderecoRequest.getComplemento())

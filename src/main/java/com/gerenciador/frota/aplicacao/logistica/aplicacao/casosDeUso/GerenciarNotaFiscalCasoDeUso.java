@@ -30,16 +30,16 @@ public class GerenciarNotaFiscalCasoDeUso implements INotaFiscalCasoDeUso {
 
     @Override
     public JpaNotaFiscalLogisticaEntity buscarNotaPeloCodigo(Long id) {
-        return new JpaNotaFiscalLogisticaEntity();
+        return MappersJpaEntity.fromNotaFiscalRequestToJpaNotaFiscalLogisticaEntity(fiscalLogisticaRepositoryPort.buscarNotasFiscaisPorCodigo(id));
     }
 
     @Override
     public RetornoServicoBase atualizarNotaFiscal(Long id, NotaFiscalLogisticaRequest request) {
-        return RetornoServicoBase.positivo("");
+        return fiscalLogisticaRepositoryPort.atualziarNotaFiscal(id, request);
     }
 
     @Override
     public RetornoServicoBase deletarNotaFiscasl(Long id) {
-        return RetornoServicoBase.positivo("");
+        return fiscalLogisticaRepositoryPort.deletarNotaFiscal(id);
     }
 }

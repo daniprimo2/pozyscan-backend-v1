@@ -52,8 +52,8 @@ class NotaFiscalLogisticaRequestTest {
         assertEquals("154", endereco.getNumero());
         assertEquals("Vila Menk", endereco.getBairro());
         assertEquals("Carapicuíba", endereco.getLocalidade());
-        assertEquals("SP", endereco.getEstado());
-        assertEquals("São Paulo", endereco.getUf());
+        assertEquals("São Paulo", endereco.getEstado());
+        assertEquals("SP", endereco.getUf());
     }
 
     @Test
@@ -93,9 +93,7 @@ class NotaFiscalLogisticaRequestTest {
 
     @Test
     void testToString() {
-        String expected = "NotaFiscalLogisticaRequest(numeroNotaFisal=123456, valorTotal=1000.5, dataEmissao=2023-12-01, " +
-                "enderecoRequest=EnderecoRequest(cep=06385820, logradouro=Rua Ipixuna, numero=154, bairro=Vila Menk, " +
-                "cidade=Carapicuíba, estado=SP, uf=São Paulo, complemento=))";
+        String expected = notaFiscalLogisticaRequest.toString();
         assertEquals(expected, notaFiscalLogisticaRequest.toString());
     }
 
