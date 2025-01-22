@@ -74,7 +74,11 @@ public class NotaFiscalLogiscaController {
     })
     @GetMapping("/buscar")
     public ResponseEntity<JpaNotaFiscalLogisticaEntity> buscarNotaFiscalPorId(@RequestParam Long codigoNotaFiscal) {
-        return ResponseEntity.status(HttpStatus.OK).body(gerenciarNotaFiscalCasoDeUso.buscarNotaPeloCodigo(codigoNotaFiscal));
+       try {
+           return ResponseEntity.status(HttpStatus.OK).body(gerenciarNotaFiscalCasoDeUso.buscarNotaPeloCodigo(codigoNotaFiscal));
+       } catch (Exception ex) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new JpaNotaFiscalLogisticaEntity());
+       }
     }
 
     /**
