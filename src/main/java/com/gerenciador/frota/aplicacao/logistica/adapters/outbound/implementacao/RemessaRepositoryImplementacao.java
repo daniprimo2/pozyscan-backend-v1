@@ -9,11 +9,13 @@ import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.RemessaReques
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.persistencia.JpaRemessaRepository;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.response.RemessaResponse;
 import com.gerenciador.frota.aplicacao.logistica.utils.mappers.Mappers;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class RemessaRepositoryImplementacao implements RemessaRepositoryPorts {
@@ -22,11 +24,6 @@ public class RemessaRepositoryImplementacao implements RemessaRepositoryPorts {
 
     private Remessa remessa;
     private JpaRemessaEntity jpaRemessaEntity;
-
-
-    public RemessaRepositoryImplementacao(JpaRemessaRepository jpaRemessaRepository) {
-        this.jpaRemessaRepository = jpaRemessaRepository;
-    }
 
 
     @Override

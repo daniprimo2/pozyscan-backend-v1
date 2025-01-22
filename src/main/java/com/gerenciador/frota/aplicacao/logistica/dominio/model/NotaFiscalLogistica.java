@@ -1,7 +1,9 @@
 package com.gerenciador.frota.aplicacao.logistica.dominio.model;
 
 import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
+import lombok.Builder;
 
+@Builder
 public class NotaFiscalLogistica {
 
     private Long codigoNotaFiscal;

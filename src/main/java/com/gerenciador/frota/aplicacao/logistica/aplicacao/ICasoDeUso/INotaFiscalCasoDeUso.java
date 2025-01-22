@@ -2,6 +2,7 @@ package com.gerenciador.frota.aplicacao.logistica.aplicacao.ICasoDeUso;
 
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaNotaFiscalLogisticaEntity;
+import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.NotaFiscalLogisticaRequest;
 
 public interface INotaFiscalCasoDeUso {
