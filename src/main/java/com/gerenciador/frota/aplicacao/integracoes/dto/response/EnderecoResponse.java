@@ -1,15 +1,13 @@
 package com.gerenciador.frota.aplicacao.integracoes.dto.response;
 
 import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class EnderecoResponse {
     private String cep;
     private String logradouro;

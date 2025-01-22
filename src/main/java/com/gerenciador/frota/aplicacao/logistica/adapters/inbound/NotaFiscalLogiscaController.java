@@ -3,6 +3,7 @@ package com.gerenciador.frota.aplicacao.logistica.adapters.inbound;
 import com.gerenciador.frota.aplicacao.autenticacao.model.RetornoServicoBase;
 import com.gerenciador.frota.aplicacao.logistica.aplicacao.casosDeUso.GerenciarNotaFiscalCasoDeUso;
 import com.gerenciador.frota.aplicacao.logistica.adapters.outbound.entities.JpaNotaFiscalLogisticaEntity;
+import com.gerenciador.frota.aplicacao.logistica.dominio.model.NotaFiscalLogistica;
 import com.gerenciador.frota.aplicacao.logistica.utils.dto.request.NotaFiscalLogisticaRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -41,7 +42,7 @@ public class NotaFiscalLogiscaController {
      *
      * <p>Este método recebe um objeto {@link NotaFiscalLogisticaRequest} validado, processa a criação
      * de uma nova nota fiscal no sistema e retorna a Nota Fiscal.</p>
-     *
+     -tre
      * @return {@link ResponseEntity<JpaNotaFiscalLogisticaEntity>} contendo a viagem criado e o status HTTP 201 (CREATED).
      */
     @Operation(summary = "Registrar uma nova nota fiscal", description = "Endpoint deve cadastrar uma nova nota fiscal.")

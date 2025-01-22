@@ -1,7 +1,6 @@
 package com.gerenciador.frota.aplicacao.integracoes.controller;
 
 import com.gerenciador.frota.aplicacao.integracoes.dto.response.EnderecoResponse;
-import com.gerenciador.frota.aplicacao.integracoes.model.Endereco;
 import com.gerenciador.frota.aplicacao.integracoes.service.EnderecoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

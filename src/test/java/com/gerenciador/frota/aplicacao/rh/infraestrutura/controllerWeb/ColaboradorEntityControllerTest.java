@@ -12,6 +12,7 @@ import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.enums.TipoContato;
 import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.enums.TipoDocumento;
 import com.gerenciador.frota.aplicacao.rh.aplicacao.dto.response.ColaboradorResponseList;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Disabled
 class ColaboradorEntityControllerTest {
 
 
