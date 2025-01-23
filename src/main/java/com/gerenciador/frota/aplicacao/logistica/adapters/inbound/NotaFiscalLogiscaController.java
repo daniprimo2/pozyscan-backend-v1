@@ -82,12 +82,8 @@ public class NotaFiscalLogiscaController {
     }
 
     /**
-     * Endpoint para atualizar a  nota fiscal por codigo.
-     *
      * <p>Este método recebe um codigo {@link Long} e {@link NotaFiscalLogisticaRequest}
-     * atualiza uma nota fiscal ja criada. </p>
-     *
-     * @return {@link ResponseEntity< RetornoServicoBase >} encontrando o codigo da nota fiscal
+dguyewgfdyuewgyfewgufgufgdsuygfcyuaedsguewragfcyuaewgfyuergfcvuyegfdyuewgfyuewgfyugfuyta fiscal
      * retorna com status HTTP 204 (NO_CONTENT).
      */
     @Operation(summary = "Atualizar a nota fiscal pelo codigo da nota fiscal",
